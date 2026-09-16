@@ -230,6 +230,10 @@
  .wheelFullscreenSub { font-size: 13px; opacity: .65; margin-top: 6px; max-width: 300px; }
  .wheelOuter { position: relative; width: 240px; height: 240px; margin: 20px auto; z-index: 2; }
  .wheel { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px #ffffff15, 0 20px 50px #00000080; transform: rotate(0deg); }
+ .wheelLabels { position:absolute; inset:0; z-index:4; pointer-events:none; }
+ .wheelLabel { position:absolute; left:50%; top:50%; width:72px; margin-left:-36px; margin-top:-14px; text-align:center; font-size:11px; font-weight:1000; color:#07101c; transform-origin:36px 14px; }
+ .wheelLabel span { display:inline-block; background:#ffffffd9; padding:4px 6px; border-radius:8px; box-shadow:0 3px 8px #00000035; }
+ .gameHint { margin-top:7px; font-size:11px; text-align:center; opacity:.68; min-height:16px; }
  .wheelPointer {
    position: absolute; top: -7px; left: 50%; transform: translateX(-50%); z-index: 3;
    width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid var(--gold);
@@ -475,7 +479,7 @@
           <div class="upgradeIconWrap">⚡</div>
           <div class="upgradeBody">
             <span class="upgradeTitle">Усилить двигатель</span>
-            <span class="upgradeInfo">+1 💰 за клик • <span id="powerCost">800.000</span> 💰</span>
+            <span class="upgradeInfo">+1 💰 за клик • <span id="powerCost">30.000</span> 💰</span>
           </div>
           <span class="upgradeLvl" id="powerLv">Lv.1</span>
         </button>
@@ -484,7 +488,7 @@
           <div class="upgradeIconWrap">🤖</div>
           <div class="upgradeBody">
             <span class="upgradeTitle">Автопилот</span>
-            <span class="upgradeInfo">+1 💰/сек • <span id="autoCost">900.000</span> 💰</span>
+            <span class="upgradeInfo">+1 💰/сек • <span id="autoCost">30.000</span> 💰</span>
           </div>
           <span class="upgradeLvl" id="autoLv">Lv.0</span>
         </button>
@@ -493,7 +497,7 @@
           <div class="upgradeIconWrap">💥</div>
           <div class="upgradeBody">
             <span class="upgradeTitle">Шанс крита</span>
-            <span class="upgradeInfo">+2% крит ×5 • <span id="critCost">1.000.000</span> 💰</span>
+            <span class="upgradeInfo">+2% крит ×5 • <span id="critCost">30.000</span> 💰</span>
           </div>
           <span class="upgradeLvl" id="critLv">5%</span>
         </button>
@@ -637,8 +641,10 @@
   <div class="wheelOuter">
     <div class="wheelPointer"></div>
     <div class="wheel" id="wheelDisk" style="background: conic-gradient(#55d9ff 0 45deg, #3979ff 45deg 90deg, #a979ff 90deg 135deg, #52e0a1 135deg 180deg, #ff5876 180deg 225deg, #ff8b42 225deg 270deg, #ffd15a 270deg 315deg, #8996ad 315deg);"></div>
+    <div class="wheelLabels" id="wheelLabels"></div>
   </div>
   <button class="wheelSpinBtn" id="spinWheelBtn">КРУТИТЬ КОЛЕСО</button>
+  <div class="gameHint" id="wheelHint"></div>
 </div>
 
 <!-- MODAL & TOAST -->
@@ -681,7 +687,8 @@ let S = JSON.parse(localStorage.getItem("airClickerSave") || "null") || {
   coins: 0, power: 1, powerLv: 1, auto: 0, autoLv: 0, crit: 5, critLv: 0,
   clicks: 0, total: 0, crystals: 10, collected: ["a320"], active: "a320",
   cases: 0, pity: 0, prestige: 0, skills: {}, ach: [],
-  gameAttempts: { date: new Date().toDateString(), counts: [0, 0, 0, 0] }
+  gameAttempts: { date: new Date().toDateString(), counts: [0, 0, 0, 0] },
+  wheelLastSpinAt: 0
 };
 
 // RESET DAILY ATTEMPTS
@@ -692,6 +699,7 @@ function checkDailyReset() {
   }
 }
 checkDailyReset();
+if (typeof S.wheelLastSpinAt !== "number") S.wheelLastSpinAt = 0;
 
 let soundOn = localStorage.getItem("airSound") !== "off";
 let selectedCase = "cadet";
@@ -783,7 +791,7 @@ function updateUI() {
     $("planeCard").classList.remove("legendaryAura");
   }
   
-  // UPGRADES (COSTS FROM 800.000 TO 1.000.000)
+  // UPGRADES (COSTS FROM 30.000 TO 30.000)
   const pCost = 800000 * Math.pow(1.85, S.powerLv - 1);
   const aCost = 900000 * Math.pow(2, S.autoLv);
   const cCost = 1000000 * Math.pow(2.1, S.critLv);
@@ -891,10 +899,11 @@ $("upAuto").onclick = () => buyUpgrade("auto");
 $("upCrit").onclick = () => buyUpgrade("crit");
 
 function buyUpgrade(type) {
+  const upgradeCost = level => 30000 * Math.pow(1.5, Math.max(0, level));
   const costs = {
-    power: 800000 * Math.pow(1.85, S.powerLv - 1),
-    auto: 900000 * Math.pow(2, S.autoLv),
-    crit: 1000000 * Math.pow(2.1, S.critLv)
+    power: upgradeCost(S.powerLv - 1),
+    auto: upgradeCost(S.autoLv),
+    crit: upgradeCost(S.critLv)
   };
   const cost = costs[type];
   if (S.coins < cost) return;
@@ -1114,9 +1123,9 @@ window.selectPlane = (id) => {
 // MINI-GAMES DEFINITIONS (MAX 10 PER GAME DAILY)
 const gameDefs = [
   ["FLIGHT DODGER", "✈️ Пролёт сквозь грозу", "Маневрируй между молниями и облаками."],
-  ["RUNWAY RUSH", "🏁 Идеальная посадка", "Удерживай лайнер в глиссаде полосы."],
-  ["AIR RAID", "🎯 Перехватчик", "Уничтожай воздушные мишени."],
-  ["SKY MEMORY", "🧠 Диспетчер", "Запоминай и повторяй эшелоны."]
+  ["RUNWAY RUSH", "🏁 Идеальная посадка", "Попадай в квадрат зоны посадки. 3 промаха — проигрыш."],
+  ["AIR RAID", "🎯 Перехватчик", "20 секунд: попади по мишеням. Попадание +5, промах −5."],
+  ["SKY MEMORY", "🧠 Диспетчер", "25 раундов. Каждый раунд последовательность становится длиннее на 1." ]
 ];
 
 function renderGames() {
@@ -1130,7 +1139,7 @@ function renderGames() {
         <p>${g[1]} — ${g[2]}</p>
         <div class="gameMeta">
           <span class="gameAttempts">Попыток: ${left}/10</span>
-          <span class="gameReward">+${(i + 1) * 350} 💰</span>
+          <span class="gameReward">Бонус до +${[900,1200,1600,1400][i].toLocaleString('ru-RU')} 💰</span>
         </div>
       </div>
     `;
@@ -1138,18 +1147,23 @@ function renderGames() {
 }
 
 let currentGame = -1, gameRunning = false, gameScore = 0, animFrame = 0;
-let g0_planeY = 140, g0_vel = 0, g0_obstacles = [];
-let g1_planePos = 0, g1_dir = 1, g1_target = 0;
-let g2_targets = [];
-let g3_seq = [], g3_userSeq = [], g3_phase = "init";
+let g0_planeY = 140, g0_vel = 0, g0_obstacles = [], g0_distance = 0;
+let g1_planePos = 0, g1_dir = 1.5, g1_targetX = 0, g1_targetY = 0, g1_targetSize = 150, g1_round = 0, g1_misses = 0;
+let g2_targets = [], g2_timeLeft = 20, g2_lastTime = 0, g2_hits = 0, g2_misses = 0;
+let g3_seq = [], g3_userSeq = [], g3_phase = "init", g3_round = 0, g3_showIndex = 0, g3_flashIndex = -1, g3_timer = null;
+
+function clearMemoryTimer() {
+  if (g3_timer) {
+    clearTimeout(g3_timer);
+    g3_timer = null;
+  }
+}
 
 window.openMiniGame = (idx) => {
+  if (gameRunning) endMiniGame(true);
   checkDailyReset();
   const used = S.gameAttempts.counts[idx] || 0;
-  if (used >= 10) {
-    return showToast("Лимит 10 попыток в день для этой игры исчерпан!");
-  }
-  
+  if (used >= 10) return showToast("Лимит 10 попыток в день для этой игры исчерпан!");
   currentGame = idx;
   $("gameCanvasWrap").classList.add("show");
   $("gameTitle").textContent = gameDefs[idx][0];
@@ -1159,40 +1173,46 @@ window.openMiniGame = (idx) => {
 
 function initCanvasPreview(idx) {
   const canvas = $("canvas"), ctx = canvas.getContext("2d");
+  clearMemoryTimer();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#0d182b";
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, "#0d182b");
+  grad.addColorStop(1, "#050914");
+  ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 20px system-ui";
   ctx.textAlign = "center";
   ctx.fillText("Нажмите 'СТАРТ ИГРЫ' для начала", canvas.width / 2, canvas.height / 2);
-}
+};
 
 $("gameStartBtn").onclick = () => {
   if (currentGame < 0) return;
   checkDailyReset();
   const used = S.gameAttempts.counts[currentGame] || 0;
   if (used >= 10) return showToast("Лимит попыток исчерпан!");
-  
+  if (gameRunning) return;
+
   S.gameAttempts.counts[currentGame] = used + 1;
   save();
   updateUI();
-  
+
+  clearMemoryTimer();
+  refreshMiniGamePlaneImage();
   gameRunning = true;
   gameScore = 0;
-  $("gameStartBtn").textContent = "ИГРА ИДЁТ... (УПРАВЛЕНИЕ КЛИКАМИ)";
-  
+  $("gameStartBtn").textContent = "ИГРА ИДЁТ...";
+
   if (currentGame === 0) {
-    g0_planeY = 200; g0_vel = 0; g0_obstacles = [];
+    g0_planeY = 210; g0_vel = 0; g0_obstacles = []; g0_distance = 0;
   } else if (currentGame === 1) {
-    g1_planePos = 0; g1_dir = 1.5; g1_target = 0;
+    g1_planePos = 0; g1_dir = 1.5; g1_round = 0; g1_misses = 0; createRunwayTarget();
   } else if (currentGame === 2) {
-    g2_targets = [];
+    g2_targets = []; g2_timeLeft = 20; g2_lastTime = performance.now(); g2_hits = 0; g2_misses = 0;
   } else if (currentGame === 3) {
-    g3_seq = []; g3_userSeq = []; g3_phase = "show";
+    g3_seq = []; g3_userSeq = []; g3_round = 0; g3_phase = "show"; g3_showIndex = 0; g3_flashIndex = -1;
     nextMemoryRound();
   }
-  
   runGameLoop();
 };
 
@@ -1202,153 +1222,291 @@ $("canvas").onpointerdown = (e) => {
   const rect = canvas.getBoundingClientRect();
   const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
   const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
-  
+
   if (currentGame === 0) {
     g0_vel = -6.5;
+    snd.tick();
   } else if (currentGame === 1) {
-    if (Math.abs(g1_planePos - g1_target) < 35) {
-      gameScore += 10;
-      snd.click();
+    const centerX = canvas.width / 2 + g1_planePos;
+    const planeY = 220;
+    const hit = clickX >= centerX - g1_targetSize / 2 && clickX <= centerX + g1_targetSize / 2 &&
+                clickY >= planeY - g1_targetSize / 2 && clickY <= planeY + g1_targetSize / 2;
+    // For this game the player clicks where the moving landing zone is.
+    const targetHit = clickX >= g1_targetX - g1_targetSize / 2 && clickX <= g1_targetX + g1_targetSize / 2 &&
+                      clickY >= g1_targetY - g1_targetSize / 2 && clickY <= g1_targetY + g1_targetSize / 2;
+    if (targetHit && Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) < g1_targetSize * 0.75) {
+      const accuracy = Math.max(0, 1 - Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) / (g1_targetSize * 0.75));
+      const points = Math.round(70 + accuracy * 130);
+      gameScore += points;
+      g1_round++;
+      snd.crit();
+      if (g1_round >= 8) {
+        endMiniGame(false, "success");
+      } else {
+        createRunwayTarget();
+      }
     } else {
-      endMiniGame();
+      g1_misses++;
+      gameScore = Math.max(0, gameScore - 40);
+      snd.click();
+      createRunwayTarget();
+      if (g1_misses >= 3) endMiniGame(false, "loss");
     }
   } else if (currentGame === 2) {
+    let hit = false;
     for (let i = g2_targets.length - 1; i >= 0; i--) {
       const t = g2_targets[i];
-      const dist = Math.hypot(clickX - t.x, clickY - t.y);
-      if (dist < t.r) {
+      if (Math.hypot(clickX - t.x, clickY - t.y) <= t.r) {
         g2_targets.splice(i, 1);
         gameScore += 5;
+        g2_hits++;
+        hit = true;
         snd.crit();
         break;
       }
     }
+    if (!hit) {
+      gameScore -= 5;
+      g2_misses++;
+      snd.click();
+      showToast("Промах −5");
+    }
   } else if (currentGame === 3 && g3_phase === "input") {
-    const btnW = 120, btnH = 120;
-    const startX = canvas.width / 2 - 130, startY = canvas.height / 2 - 60;
-    const btns = [
-      {x: startX, y: startY}, {x: startX + 140, y: startY},
-      {x: startX, y: startY + 140}, {x: startX + 140, y: startY + 140}
-    ];
-    
-    btns.forEach((b, idx) => {
-      if (clickX >= b.x && clickX <= b.x + btnW && clickY >= b.y && clickY <= b.y + btnH) {
-        g3_userSeq.push(idx);
-        snd.tick();
-        checkMemoryInput();
+    const buttons = getMemoryButtons(canvas);
+    for (let i = 0; i < buttons.length; i++) {
+      const b = buttons[i];
+      if (clickX >= b.x && clickX <= b.x + b.w && clickY >= b.y && clickY <= b.y + b.h) {
+        memoryPress(i);
+        break;
       }
-    });
+    }
   }
 };
 
-function nextMemoryRound() {
-  g3_phase = "show";
-  g3_userSeq = [];
-  g3_seq.push(Math.floor(Math.random() * 4));
+function createRunwayTarget() {
+  const canvas = $("canvas");
+  const margin = 100;
+  // True square: medium size, never tiny and never huge.
+  g1_targetSize = 110 + Math.random() * 80;
+  g1_targetX = margin + Math.random() * (canvas.width - margin * 2);
+  g1_targetY = 120 + Math.random() * 200;
+  // Keep the moving plane near the target area, but not exactly on it.
+  g1_planePos = Math.max(-300, Math.min(300, g1_targetX - canvas.width / 2 + (Math.random() - .5) * 240));
+  g1_dir = (Math.random() < .5 ? -1 : 1) * (1.2 + Math.random() * 1.8);
 }
 
-function checkMemoryInput() {
-  const idx = g3_userSeq.length - 1;
-  if (g3_userSeq[idx] !== g3_seq[idx]) {
-    endMiniGame();
+function nextMemoryRound() {
+  if (!gameRunning || currentGame !== 3) return;
+  g3_round++;
+  if (g3_round > 25) {
+    gameScore += 10000;
+    endMiniGame(false, "memoryWin");
+    return;
+  }
+  g3_seq.push(Math.floor(Math.random() * 4));
+  g3_userSeq = [];
+  g3_phase = "show";
+  g3_showIndex = 0;
+  g3_flashIndex = -1;
+  showMemorySequence();
+}
+
+function showMemorySequence() {
+  clearMemoryTimer();
+  if (!gameRunning || currentGame !== 3) return;
+  if (g3_showIndex >= g3_seq.length) {
+    g3_flashIndex = -1;
+    g3_phase = "input";
+    g3_userSeq = [];
+    return;
+  }
+  g3_flashIndex = g3_seq[g3_showIndex];
+  g3_timer = setTimeout(() => {
+    g3_flashIndex = -1;
+    g3_showIndex++;
+    g3_timer = setTimeout(showMemorySequence, 300);
+  }, 550);
+}
+
+function getMemoryButtons(canvas) {
+  const size = 125;
+  const gap = 22;
+  const total = size * 2 + gap;
+  const sx = canvas.width / 2 - total / 2;
+  const sy = canvas.height / 2 - total / 2;
+  return [
+    {x:sx, y:sy, w:size, h:size},
+    {x:sx+size+gap, y:sy, w:size, h:size},
+    {x:sx, y:sy+size+gap, w:size, h:size},
+    {x:sx+size+gap, y:sy+size+gap, w:size, h:size}
+  ];
+}
+
+function memoryPress(idx) {
+  if (g3_phase !== "input" || !gameRunning) return;
+  g3_userSeq.push(idx);
+  snd.tick();
+  if (idx !== g3_seq[g3_userSeq.length - 1]) {
+    gameScore = Math.max(0, gameScore - 75);
+    endMiniGame(false, "memoryLoss");
     return;
   }
   if (g3_userSeq.length === g3_seq.length) {
-    gameScore += 10;
-    setTimeout(nextMemoryRound, 600);
+    gameScore += 100 + g3_seq.length * 80;
+    g3_phase = "between";
+    clearMemoryTimer();
+    g3_timer = setTimeout(nextMemoryRound, 450);
   }
 }
 
-function runGameLoop() {
+let gPlaneImg = null;
+let gPlaneImgSrc = "";
+function refreshMiniGamePlaneImage() {
+  const p = getActivePlane();
+  if (gPlaneImgSrc === p.image && gPlaneImg) return;
+  gPlaneImgSrc = p.image;
+  gPlaneImg = new Image();
+  gPlaneImg.crossOrigin = "anonymous";
+  gPlaneImg.src = p.image;
+}
+function drawPlane(ctx, x, y, scale = 1) {
+  ctx.save(); ctx.translate(x,y); ctx.scale(scale,scale);
+  if (gPlaneImg && gPlaneImg.complete && gPlaneImg.naturalWidth > 0) {
+    const w=96,h=60; ctx.shadowColor="#55d9ff"; ctx.shadowBlur=18;
+    ctx.beginPath(); ctx.roundRect(-w/2,-h/2,w,h,16); ctx.clip(); ctx.drawImage(gPlaneImg,-w/2,-h/2,w,h); ctx.restore(); return;
+  }
+  ctx.shadowColor="#55d9ff"; ctx.shadowBlur=18; ctx.font="58px system-ui, Apple Color Emoji, Segoe UI Emoji, sans-serif";
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("✈️",0,0); ctx.restore();
+}
+
+function runGameLoop(now = performance.now()) {
   if (!gameRunning) return;
   const canvas = $("canvas"), ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
   const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
   grad.addColorStop(0, "#081021");
   grad.addColorStop(1, "#04070f");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
+
   if (currentGame === 0) {
     g0_vel += 0.32;
     g0_planeY += g0_vel;
-    
-    if (!g0_obstacles.length || g0_obstacles[g0_obstacles.length - 1].x < canvas.width - 240) {
-      g0_obstacles.push({ x: canvas.width, top: 40 + Math.random() * 160, gap: 140 });
+    g0_distance += 0.016;
+    if (!g0_obstacles.length || g0_obstacles[g0_obstacles.length - 1].x < canvas.width - 250) {
+      g0_obstacles.push({ x: canvas.width, top: 45 + Math.random() * 155, gap: 145 + Math.random() * 25, passed:false });
     }
-    g0_obstacles.forEach(o => o.x -= 4);
-    g0_obstacles = g0_obstacles.filter(o => o.x > -80);
-    
-    ctx.fillStyle = "#3979ff";
+    g0_obstacles.forEach(o => o.x -= 4.4);
+    g0_obstacles = g0_obstacles.filter(o => o.x > -90);
     g0_obstacles.forEach(o => {
+      const lightning = ctx.createLinearGradient(o.x,0,o.x+60,0);
+      lightning.addColorStop(0,"#3979ff"); lightning.addColorStop(.5,"#55d9ff"); lightning.addColorStop(1,"#3979ff");
+      ctx.fillStyle = lightning;
       ctx.fillRect(o.x, 0, 60, o.top);
       ctx.fillRect(o.x, o.top + o.gap, 60, canvas.height - o.top - o.gap);
-      if (!o.passed && o.x < 120) { o.passed = true; gameScore += 2; }
+      if (!o.passed && o.x < 120) { o.passed = true; gameScore += 35; }
     });
-    
-    ctx.font = "36px system-ui";
-    ctx.textAlign = "center";
-    ctx.fillText("✈️", 120, g0_planeY);
-    
-    if (g0_planeY < 0 || g0_planeY > canvas.height || g0_obstacles.some(o => o.x < 140 && o.x + 60 > 100 && (g0_planeY - 15 < o.top || g0_planeY + 15 > o.top + o.gap))) {
-      endMiniGame(); return;
+    drawPlane(ctx, 120, g0_planeY, 1.15);
+    if (g0_planeY < 15 || g0_planeY > canvas.height - 15 || g0_obstacles.some(o => o.x < 145 && o.x + 60 > 95 && (g0_planeY - 15 < o.top || g0_planeY + 15 > o.top + o.gap))) {
+      endMiniGame(false, "crash"); return;
     }
+    ctx.fillStyle="#ffffffcc"; ctx.font="bold 18px system-ui"; ctx.textAlign="left"; ctx.fillText("ПРОЛЁТ: " + g0_distance.toFixed(1) + " км", 18, 30);
+
   } else if (currentGame === 1) {
     g1_planePos += g1_dir;
-    if (Math.abs(g1_planePos) > 300) g1_dir *= -1;
-    
-    ctx.fillStyle = "#ffffff15";
-    ctx.fillRect(canvas.width / 2 - 40, 50, 80, 320);
-    ctx.fillStyle = "#52e0a1";
-    ctx.fillRect(canvas.width / 2 - 25, 180, 50, 60);
-    
-    ctx.font = "38px system-ui";
-    ctx.textAlign = "center";
-    ctx.fillText("🛬", canvas.width / 2 + g1_planePos, 220);
+    if (Math.abs(g1_planePos) > 330) g1_dir *= -1;
+    const cx = canvas.width / 2 + g1_planePos;
+    // runway
+    ctx.fillStyle="#ffffff12"; ctx.fillRect(canvas.width/2-380, 45, 760, 330);
+    ctx.strokeStyle="#ffffff18"; ctx.lineWidth=3; ctx.strokeRect(canvas.width/2-380,45,760,330);
+    for(let y=70;y<350;y+=55){ ctx.fillStyle="#ffffff22"; ctx.fillRect(canvas.width/2-4,y,8,28); }
+    // target square
+    ctx.save();
+    ctx.translate(g1_targetX, g1_targetY);
+    ctx.fillStyle="#52e0a140"; ctx.strokeStyle="#52e0a1"; ctx.lineWidth=5;
+    ctx.shadowColor="#52e0a1"; ctx.shadowBlur=22;
+    ctx.fillRect(-g1_targetSize/2,-g1_targetSize/2,g1_targetSize,g1_targetSize);
+    ctx.strokeRect(-g1_targetSize/2,-g1_targetSize/2,g1_targetSize,g1_targetSize);
+    ctx.restore();
+    drawPlane(ctx,cx,220,1.05);
+    ctx.fillStyle="#fff"; ctx.font="bold 17px system-ui"; ctx.textAlign="left";
+    ctx.fillText("ПОПАДАНИЙ: "+g1_round+"/8",18,28);
+    ctx.fillStyle="#ff5876"; ctx.textAlign="right"; ctx.fillText("ПРОМАХОВ: "+g1_misses+"/3",canvas.width-18,28);
+    ctx.textAlign="center"; ctx.fillStyle="#ffffffaa"; ctx.font="bold 15px system-ui";
+    ctx.fillText("КЛИКАЙ ПО ЗЕЛЁНОМУ КВАДРАТУ",canvas.width/2,405);
+
   } else if (currentGame === 2) {
-    if (Math.random() < 0.04 && g2_targets.length < 5) {
-      g2_targets.push({ x: 80 + Math.random() * (canvas.width - 160), y: 60 + Math.random() * (canvas.height - 120), r: 28 });
+    const dt = Math.min(0.1, (now - g2_lastTime) / 1000); g2_lastTime = now;
+    g2_timeLeft -= dt;
+    if (g2_timeLeft <= 0) { g2_timeLeft=0; endMiniGame(false,"time"); return; }
+    if (Math.random() < 0.055 && g2_targets.length < 7) {
+      const r = 24 + Math.random()*14;
+      g2_targets.push({x:70+r+Math.random()*(canvas.width-140-2*r),y:65+r+Math.random()*(canvas.height-135-2*r),r,life:2.1+Math.random()*1.5,age:0,phase:Math.random()*Math.PI*2});
     }
-    
+    g2_targets.forEach(t => { t.age += dt; t.x += Math.sin(t.age*3+t.phase)*.7; t.y += Math.cos(t.age*2.5+t.phase)*.5; });
+    const expired = g2_targets.filter(t=>t.age>=t.life).length;
+    if (expired) g2_targets = g2_targets.filter(t=>t.age<t.life);
     g2_targets.forEach(t => {
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-      ctx.fillStyle = "#ff5876";
-      ctx.fill();
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 3;
-      ctx.stroke();
+      const pulse=1+Math.sin(t.age*7)*.08;
+      ctx.beginPath(); ctx.arc(t.x,t.y,t.r*pulse,0,Math.PI*2); ctx.fillStyle="#ff5876"; ctx.fill();
+      ctx.beginPath(); ctx.arc(t.x,t.y,t.r*.48,0,Math.PI*2); ctx.fillStyle="#ffd15a"; ctx.fill();
+      ctx.strokeStyle="#fff"; ctx.lineWidth=3; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(t.x-t.r-10,t.y); ctx.lineTo(t.x+t.r+10,t.y); ctx.moveTo(t.x,t.y-t.r-10); ctx.lineTo(t.x,t.y+t.r+10); ctx.strokeStyle="#ffffff60"; ctx.stroke();
     });
+    ctx.fillStyle="#fff"; ctx.font="bold 24px system-ui"; ctx.textAlign="left"; ctx.fillText("ВРЕМЯ: "+g2_timeLeft.toFixed(1)+"с",18,32);
+    ctx.textAlign="right"; ctx.fillText("ПОПАДАНИЙ: "+g2_hits,canvas.width-18,32);
+    ctx.textAlign="center"; ctx.font="bold 16px system-ui"; ctx.fillStyle="#ffffffaa"; ctx.fillText("ПОПАДАНИЕ +5  •  ПРОМАХ −5",canvas.width/2,405);
+
   } else if (currentGame === 3) {
-    const btnW = 120, btnH = 120;
-    const startX = canvas.width / 2 - 130, startY = canvas.height / 2 - 60;
-    const colors = ["#55d9ff", "#a979ff", "#52e0a1", "#ffd15a"];
-    const btns = [
-      {x: startX, y: startY}, {x: startX + 140, y: startY},
-      {x: startX, y: startY + 140}, {x: startX + 140, y: startY + 140}
-    ];
-    
-    btns.forEach((b, idx) => {
-      ctx.fillStyle = colors[idx];
-      ctx.globalAlpha = (g3_phase === "show" && g3_seq[g3_seq.length - 1] === idx) ? 1.0 : 0.4;
-      ctx.fillRect(b.x, b.y, btnW, btnH);
+    const buttons = getMemoryButtons(canvas);
+    const colors=["#55d9ff","#a979ff","#52e0a1","#ffd15a"];
+    buttons.forEach((b,idx)=>{
+      const active = g3_flashIndex === idx;
+      ctx.save();
+      ctx.fillStyle=colors[idx]; ctx.globalAlpha=active?1:.28;
+      ctx.shadowColor=colors[idx]; ctx.shadowBlur=active?35:0;
+      ctx.fillRect(b.x,b.y,b.w,b.h);
+      ctx.strokeStyle="#ffffff80"; ctx.lineWidth=3; ctx.strokeRect(b.x,b.y,b.w,b.h);
+      ctx.restore();
     });
-    ctx.globalAlpha = 1.0;
+    ctx.fillStyle="#fff"; ctx.font="bold 22px system-ui"; ctx.textAlign="left";
+    ctx.fillText("РАУНД: "+Math.min(g3_round,25)+"/25",18,32);
+    ctx.textAlign="right"; ctx.fillText("СЧЁТ: "+gameScore,canvas.width-18,32);
+    ctx.textAlign="center"; ctx.font="bold 16px system-ui";
+    ctx.fillStyle=g3_phase==="input"?"#52e0a1":"#ffffffaa";
+    ctx.fillText(g3_phase==="input"?"ТЕПЕРЬ ПОВТОРИ ПОСЛЕДОВАТЕЛЬНОСТЬ":"ЗАПОМИНАЙ ПОСЛЕДОВАТЕЛЬНОСТЬ",canvas.width/2,405);
   }
-  
-  $("gameScore").textContent = "Счёт: " + gameScore;
+
+  $("gameScore").textContent = currentGame === 2 ? "Счёт: " + gameScore + " • " + g2_timeLeft.toFixed(1) + "с" : "Счёт: " + gameScore;
   animFrame = requestAnimationFrame(runGameLoop);
 }
 
-function endMiniGame() {
+function endMiniGame(silent = false, reason = "normal") {
+  if (!gameRunning && !silent) return;
   gameRunning = false;
   cancelAnimationFrame(animFrame);
-  const reward = (currentGame + 1) * 350 + gameScore * 25;
+  clearMemoryTimer();
+  g3_flashIndex = -1;
+
+  if (silent) return;
+
+  let reward = 0;
+  if (currentGame === 0) {
+    reward = 900 + gameScore * 18 + Math.floor(g0_distance * 120);
+  } else if (currentGame === 1) {
+    reward = Math.max(500, 1200 + gameScore * 22 + g1_round * 180 - g1_misses * 80);
+  } else if (currentGame === 2) {
+    reward = Math.max(0, 1600 + gameScore * 35 + g2_hits * 120 - g2_misses * 35);
+  } else if (currentGame === 3) {
+    reward = 1400 + gameScore * 24 + g3_seq.length * 250;
+  }
+
   S.coins += reward;
   S.total += reward;
   snd.win();
-  showToast(`🏆 Игра завершена! Награда: +${fmt(reward)} 💰!`);
+  const title = reason === "loss" || reason === "memoryLoss" ? "💥 ИГРА ОКОНЧЕНА" : "🏆 ИГРА ЗАВЕРШЕНА";
+  const extra = currentGame === 1 ? ` Посадок: ${g1_round}/8, промахов: ${g1_misses}/3.` : currentGame === 3 ? ` Раунд: ${Math.min(g3_round,25)}/25.` : "";
+  showToast(`${title}! Награда: +${fmt(reward)} 💰!${extra}`);
   $("gameStartBtn").textContent = "СТАРТ ИГРЫ";
   updateUI();
   save();
@@ -1378,58 +1536,19 @@ function renderAchievements() {
   }).join("");
 }
 
-// WHEEL MODAL SYSTEM WITH SYNCHRONIZED TICKING SOUND & LONGER SPIN
-$("openWheelWidget").onclick = () => { $("wheelModal").classList.add("show"); };
-$("closeWheelModal").onclick = () => { $("wheelModal").classList.remove("show"); };
-
-let currentWheelAngle = 0;
-$("spinWheelBtn").onclick = () => {
-  const rewards = [200, 500, 1000, 2500, 5000, 10000, 25000, 50000];
-  const idx = Math.floor(Math.random() * rewards.length);
-  const sectorAngle = 360 / rewards.length;
-  
-  const totalRounds = 8;
-  const targetAngle = currentWheelAngle + (360 * totalRounds) + (idx * sectorAngle);
-  const spinDuration = 7000;
-  
-  $("spinWheelBtn").disabled = true;
-  let startTime = null;
-  let lastSector = Math.floor(currentWheelAngle / sectorAngle);
-
-  function animateWheel(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
-    const progress = Math.min(elapsed / spinDuration, 1);
-    const easeProgress = 1 - Math.pow(1 - progress, 4);
-    
-    const angle = currentWheelAngle + (targetAngle - currentWheelAngle) * easeProgress;
-    $("wheelDisk").style.transform = `rotate(${angle}deg)`;
-    
-    const currentSector = Math.floor(angle / sectorAngle);
-    if (currentSector !== lastSector) {
-      snd.tick();
-      lastSector = currentSector;
-    }
-    
-    if (progress < 1) {
-      requestAnimationFrame(animateWheel);
-    } else {
-      currentWheelAngle = angle % 360;
-      const win = rewards[idx];
-      S.coins += win;
-      S.total += win;
-      snd.win();
-      spawnConfetti();
-      showToast(`🎉 Вы выиграли +${fmt(win)} 💰!`);
-      $("spinWheelBtn").disabled = false;
-      $("wheelModal").classList.remove("show");
-      updateUI();
-      save();
-    }
-  }
-  
-  requestAnimationFrame(animateWheel);
-};
+// WHEEL MODAL SYSTEM: 1 бесплатный спин раз в 24 часа + разблокировка за 10.000
+const wheelRewards=[5000,10000,10000,15200,25000,50000,75000,100000];
+const WHEEL_COOLDOWN=24*60*60*1000;
+let currentWheelAngle=0;
+function wheelCooldownLeft(){return Math.max(0,WHEEL_COOLDOWN-(Date.now()-(S.wheelLastSpinAt||0)));}
+function formatCountdown(ms){const t=Math.ceil(ms/1000),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;}
+function renderWheelLabels(){const wrap=$("wheelLabels");if(!wrap)return;wrap.style.transform="rotate(0deg)";const n=wheelRewards.length,r=88;wrap.innerHTML=wheelRewards.map((v,i)=>{const a=i*(360/n)+180/n;return `<div class="wheelLabel" style="transform:rotate(${a}deg) translateY(-${r}px) rotate(-${a}deg)"><span>${fmt(v)}</span></div>`;}).join("");}
+function updateWheelUI(){const left=wheelCooldownLeft(),btn=$("spinWheelBtn"),hint=$("wheelHint"),sub=$("wheelWidgetSub");if(!btn||!hint||!sub)return;if(left<=0){btn.disabled=false;btn.textContent="🎁 БЕСПЛАТНЫЙ СПИН";hint.textContent="Бесплатная прокрутка доступна прямо сейчас.";sub.textContent="Бесплатный спин доступен!";}else{btn.disabled=false;btn.textContent="🔓 РАЗБЛОКИРОВАТЬ ЗА 10.000 💰";hint.textContent=`Бесплатный спин снова через ${formatCountdown(left)}. Сейчас можно разблокировать за 10.000 💰.`;sub.textContent=`Следующий бесплатный спин через ${formatCountdown(left)}`;}}
+$("openWheelWidget").onclick=()=>{renderWheelLabels();updateWheelUI();$("wheelModal").classList.add("show");};
+$("closeWheelModal").onclick=()=>{$("wheelModal").classList.remove("show");};
+setInterval(updateWheelUI,1000);
+$("spinWheelBtn").onclick=()=>{const left=wheelCooldownLeft(),isFree=left<=0;if(!isFree){if(S.coins<10000)return showToast("Нужно 10.000 💰 для разблокировки колеса!");S.coins-=10000;}const idx=Math.floor(Math.random()*wheelRewards.length),sa=360/wheelRewards.length;const desired=270-(idx*sa+sa/2),norm=((currentWheelAngle%360)+360)%360,delta=((desired-norm)+360)%360,target=currentWheelAngle+2880+delta,dur=7000;$("spinWheelBtn").disabled=true;let st=null;function animateWheel(ts){if(!st)st=ts;const p=Math.min((ts-st)/dur,1),ease=1-Math.pow(1-p,4),angle=currentWheelAngle+(target-currentWheelAngle)*ease;$("wheelDisk").style.transform=`rotate(${angle}deg)`;if ($('"wheelLabels"')) $('"wheelLabels"').style.transform=`rotate(${angle}deg)`;if(p<1){requestAnimationFrame(animateWheel);return;}currentWheelAngle=angle%360;const win=wheelRewards[idx];S.coins+=win;S.total+=win;S.wheelLastSpinAt=Date.now();snd.win();spawnConfetti();showToast(`🎉 Вы выиграли +${fmt(win)} 💰!${isFree?" Бесплатный спин использован.":" Разблокировка оплачена: 10.000 💰."}`);$("spinWheelBtn").disabled=false;$("wheelModal").classList.remove("show");updateWheelUI();updateUI();save();}updateUI();save();requestAnimationFrame(animateWheel);};
+renderWheelLabels();updateWheelUI();
 
 // UI UTILITIES
 function showModal(title, sub, text) {
