@@ -8,7 +8,7 @@
 
 <style>
  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
- 
+
  :root {
    --bg1: #070a12;
    --bg2: #0d1424;
@@ -24,7 +24,7 @@
    --panelBorder: #ffffff18;
    --cardShadow: 0 16px 45px #00000080;
  }
- 
+
  body {
    min-height: 100vh;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -36,1549 +36,1816 @@
    overflow-x: hidden;
    padding-bottom: calc(82px + env(safe-area-inset-bottom));
  }
- 
+
  button { font-family: inherit; }
- 
- .container { width: min(1100px, 94%); margin: 0 auto; padding: 14px 0 20px; position: relative; z-index: 1; }
- 
+
+ .container {
+   width: min(1100px, 94%);
+   margin: 0 auto;
+   padding: 14px 0 20px;
+   position: relative;
+   z-index: 1;
+ }
+
  /* SPLASH SCREEN */
  .splashScreen {
-   position: fixed; inset: 0; z-index: 20000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+   position: fixed;
+   inset: 0;
+   z-index: 20000;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
    background: linear-gradient(160deg, var(--bg1), var(--bg2) 60%, var(--bg3));
    transition: opacity .5s ease, visibility .5s ease;
  }
- .splashScreen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
- .splashLogo { font-size: 68px; animation: splashPulse 1.2s ease-in-out infinite; filter: drop-shadow(0 0 30px #55d9ff80); }
- @keyframes splashPulse { 0%,100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.12) rotate(-3deg); } }
- .splashTitle { font-size: 26px; font-weight: 900; margin-top: 14px; letter-spacing: -0.5px; }
+
+ .splashScreen.hide {
+   opacity: 0;
+   visibility: hidden;
+   pointer-events: none;
+ }
+
+ .splashLogo {
+   font-size: 68px;
+   animation: splashPulse 1.2s ease-in-out infinite;
+   filter: drop-shadow(0 0 30px #55d9ff80);
+ }
+
+ @keyframes splashPulse {
+   0%,100% { transform: scale(1) rotate(0deg); }
+   50% { transform: scale(1.12) rotate(-3deg); }
+ }
+
+ .splashTitle {
+   font-size: 26px;
+   font-weight: 900;
+   margin-top: 14px;
+   letter-spacing: -0.5px;
+ }
+
  .splashTitle span {
-   background: linear-gradient(90deg, var(--cyan), var(--blue), var(--gold), var(--cyan)); background-size: 300% auto;
-   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+   background: linear-gradient(90deg, var(--cyan), var(--blue), var(--gold), var(--cyan));
+   background-size: 300% auto;
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
    animation: shimmerText 2.5s linear infinite;
  }
- .splashSub { font-size: 12px; opacity: .65; margin-top: 6px; }
- .splashBar { width: 180px; height: 6px; border-radius: 10px; background: #ffffff15; margin-top: 22px; overflow: hidden; }
- .splashBarFill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--gold)); animation: splashLoad 1.1s ease forwards; }
- @keyframes splashLoad { to { width: 100%; } }
- 
+
+ .splashSub {
+   font-size: 12px;
+   opacity: .65;
+   margin-top: 6px;
+ }
+
+ .splashBar {
+   width: 180px;
+   height: 6px;
+   border-radius: 10px;
+   background: #ffffff15;
+   margin-top: 22px;
+   overflow: hidden;
+ }
+
+ .splashBarFill {
+   width: 0%;
+   height: 100%;
+   border-radius: inherit;
+   background: linear-gradient(90deg, var(--cyan), var(--gold));
+   animation: splashLoad 1.1s ease forwards;
+ }
+
+ @keyframes splashLoad {
+   to { width: 100%; }
+ }
+
  /* BACKGROUND ANIMATIONS */
- .bgParticles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+ .bgParticles {
+   position: fixed;
+   inset: 0;
+   z-index: 0;
+   pointer-events: none;
+   overflow: hidden;
+ }
+
  .bgPattern {
-   position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.04;
-   background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+   position: fixed;
+   inset: 0;
+   z-index: 0;
+   pointer-events: none;
+   opacity: 0.04;
+   background-image:
+     linear-gradient(#fff 1px, transparent 1px),
+     linear-gradient(90deg, #fff 1px, transparent 1px);
    background-size: 40px 40px;
  }
- 
+
  /* HEADER */
- .header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
- .logo { display: flex; align-items: center; gap: 8px; }
- .logoEmoji { font-size: 28px; animation: idleFloat 2.6s ease-in-out infinite; }
- .logoText { font-size: clamp(19px, 5vw, 25px); font-weight: 1000; letter-spacing: -0.5px; }
+ .header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 10px;
+   margin-bottom: 14px;
+ }
+
+ .logo {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+ }
+
+ .logoEmoji {
+   font-size: 28px;
+   animation: idleFloat 2.6s ease-in-out infinite;
+ }
+
+ .logoText {
+   font-size: clamp(19px, 5vw, 25px);
+   font-weight: 1000;
+   letter-spacing: -0.5px;
+ }
+
  .logoText span {
-   background: linear-gradient(90deg, var(--cyan), var(--violet), var(--gold)); background-size: 200% auto;
-   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+   background: linear-gradient(90deg, var(--cyan), var(--violet), var(--gold));
+   background-size: 200% auto;
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
    animation: shimmerText 3.5s linear infinite;
  }
- @keyframes shimmerText { to { background-position: -200% center; } }
- .prestigeBadge {
-   display: none; align-items: center; gap: 4px; font-size: 11px; font-weight: 900;
-   padding: 3px 9px; border-radius: 20px; background: linear-gradient(135deg, var(--gold), var(--orange));
-   color: #211303; margin-left: 6px; box-shadow: 0 4px 12px #ffd15a50; vertical-align: middle;
+
+ @keyframes shimmerText {
+   to { background-position: -200% center; }
  }
- .headerRight { display: flex; gap: 8px; align-items: center; }
+17:18
+.prestigeBadge {
+   display: none;
+   align-items: center;
+   gap: 4px;
+   font-size: 11px;
+   font-weight: 900;
+   padding: 3px 9px;
+   border-radius: 20px;
+   background: linear-gradient(135deg, var(--gold), var(--orange));
+   color: #211303;
+   margin-left: 6px;
+   box-shadow: 0 4px 12px #ffd15a50;
+   vertical-align: middle;
+ }
+
+ .headerRight {
+   display: flex;
+   gap: 8px;
+   align-items: center;
+ }
+
  .iconBtn {
-   width: 38px; height: 38px; border-radius: 13px; border: 1px solid var(--panelBorder);
-   background: var(--panel); backdrop-filter: blur(15px); color: white; font-size: 16px;
-   cursor: pointer; display: flex; align-items: center; justify-content: center;
+   width: 38px;
+   height: 38px;
+   border-radius: 13px;
+   border: 1px solid var(--panelBorder);
+   background: var(--panel);
+   backdrop-filter: blur(15px);
+   color: white;
+   font-size: 16px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
  }
+
  .coins {
-   padding: 8px 14px; border-radius: 16px; background: linear-gradient(135deg, #ffffff14, #ffffff08);
-   border: 1px solid var(--panelBorder); backdrop-filter: blur(15px); font-size: 15px; font-weight: 900;
-   box-shadow: var(--cardShadow); white-space: nowrap; display: flex; flex-direction: column; align-items: flex-end;
-   line-height: 1.2; transition: transform .15s ease;
+   padding: 8px 14px;
+   border-radius: 16px;
+   background: linear-gradient(135deg, #ffffff14, #ffffff08);
+   border: 1px solid var(--panelBorder);
+   backdrop-filter: blur(15px);
+   font-size: 15px;
+   font-weight: 900;
+   box-shadow: var(--cardShadow);
+   white-space: nowrap;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   line-height: 1.2;
+   transition: transform .15s ease;
  }
- .coins.bump { transform: scale(1.08); }
+
+ .coins.bump {
+   transform: scale(1.08);
+ }
+
  .crystalPill {
-   padding: 8px 12px; border-radius: 16px; background: linear-gradient(135deg, #55d9ff30, #a979ff30);
-   border: 2px solid #55d9ff60; color: white; font-weight: 900; font-size: 13px; cursor: pointer;
-   box-shadow: 0 6px 16px #55d9ff30; white-space: nowrap;
+   padding: 8px 12px;
+   border-radius: 16px;
+   background: linear-gradient(135deg, #55d9ff30, #a979ff30);
+   border: 2px solid #55d9ff60;
+   color: white;
+   font-weight: 900;
+   font-size: 13px;
+   cursor: pointer;
+   box-shadow: 0 6px 16px #55d9ff30;
+   white-space: nowrap;
  }
- .coinsPerSec { font-size: 10px; opacity: .65; font-weight: 700; }
- 
+
+ .coinsPerSec {
+   font-size: 10px;
+   opacity: .65;
+   font-weight: 700;
+ }
+
  /* SPEECH BUBBLE */
  .speechBubble {
-   position: relative; margin: 0 0 14px; padding: 10px 16px; border-radius: 18px 18px 18px 4px;
-   background: linear-gradient(135deg, #ffffff14, #ffffff08); border: 1px solid var(--panelBorder);
-   font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(6px); transition: all .3s ease;
-   display: flex; align-items: center; gap: 8px;
+   position: relative;
+   margin: 0 0 14px;
+   padding: 10px 16px;
+   border-radius: 18px 18px 18px 4px;
+   background: linear-gradient(135deg, #ffffff14, #ffffff08);
+   border: 1px solid var(--panelBorder);
+   font-size: 13px;
+   font-weight: 600;
+   opacity: 0;
+   transform: translateY(6px);
+   transition: all .3s ease;
+   display: flex;
+   align-items: center;
+   gap: 8px;
  }
- .speechBubble.show { opacity: 1; transform: translateY(0); }
- 
+
+ .speechBubble.show {
+   opacity: 1;
+   transform: translateY(0);
+ }
+
  /* LEVEL BOX */
- .levelBox { padding: 14px 16px; border-radius: 20px; background: var(--panel); border: 1px solid var(--panelBorder); backdrop-filter: blur(18px); margin-bottom: 14px; box-shadow: var(--cardShadow); }
- .levelTop { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 800; font-size: 13px; }
- .progress { height: 9px; border-radius: 20px; background: #00000045; overflow: hidden; }
- .progressBar { height: 100%; width: 0%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 15px #55d9ff80; transition: width .3s ease; }
- 
+ .levelBox {
+   padding: 14px 16px;
+   border-radius: 20px;
+   background: var(--panel);
+   border: 1px solid var(--panelBorder);
+   backdrop-filter: blur(18px);
+   margin-bottom: 14px;
+   box-shadow: var(--cardShadow);
+ }
+
+ .levelTop {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 8px;
+   font-weight: 800;
+   font-size: 13px;
+ }
+
+ .progress {
+   height: 9px;
+   border-radius: 20px;
+   background: #00000045;
+   overflow: hidden;
+ }
+
+ .progressBar {
+   height: 100%;
+   width: 0%;
+   border-radius: inherit;
+   background: linear-gradient(90deg, var(--cyan), var(--violet));
+   box-shadow: 0 0 15px #55d9ff80;
+   transition: width .3s ease;
+ }
+
  /* BOTTOM NAVIGATION & TABS */
  .navBar {
-   position: fixed; bottom: calc(10px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
-   width: min(1080px, 94%); height: 64px; border-radius: 22px; background: #080e1adb;
-   border: 1px solid var(--panelBorder); backdrop-filter: blur(25px); display: flex; justify-content: space-evenly;
-   align-items: center; z-index: 1000; box-shadow: 0 20px 50px #000000a0;
+   position: fixed;
+   bottom: calc(10px + env(safe-area-inset-bottom));
+   left: 50%;
+   transform: translateX(-50%);
+   width: min(1080px, 94%);
+   height: 64px;
+   border-radius: 22px;
+   background: #080e1adb;
+   border: 1px solid var(--panelBorder);
+   backdrop-filter: blur(25px);
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
+   z-index: 1000;
+   box-shadow: 0 20px 50px #000000a0;
  }
+
  .navItem {
-   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-   color: #8996ad; font-size: 10px; font-weight: 800; border: none; background: transparent;
-   cursor: pointer; width: 22%; height: 100%; transition: all .2s ease;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 3px;
+   color: #8996ad;
+   font-size: 10px;
+   font-weight: 800;
+   border: none;
+   background: transparent;
+   cursor: pointer;
+   width: 22%;
+   height: 100%;
+   transition: all .2s ease;
  }
- .navItem .navIcon { font-size: 20px; transition: transform .2s ease; }
- .navItem.active { color: #ffffff; }
- .navItem.active .navIcon { transform: translateY(-2px) scale(1.15); filter: drop-shadow(0 0 10px var(--cyan)); }
- 
- .tabPanel { display: none; animation: tabIn .25s ease; }
- .tabPanel.active { display: block; }
- @keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
- 
- .panel { border-radius: 26px; background: var(--panel); border: 2px solid var(--panelBorder); backdrop-filter: blur(20px); box-shadow: var(--cardShadow); }
- .sectionTitle { font-size: 19px; font-weight: 900; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
- .sectionSub { font-size: 12px; opacity: .65; margin-bottom: 14px; }
- 
- .subTabs { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; }
+
+ .navItem .navIcon {
+   font-size: 20px;
+   transition: transform .2s ease;
+ }
+
+ .navItem.active {
+   color: #ffffff;
+ }
+
+ .navItem.active .navIcon {
+   transform: translateY(-2px) scale(1.15);
+   filter: drop-shadow(0 0 10px var(--cyan));
+ }
+
+ .tabPanel {
+   display: none;
+   animation: tabIn .25s ease;
+ }
+
+ .tabPanel.active {
+   display: block;
+ }
+
+ @keyframes tabIn {
+   from {
+     opacity: 0;
+     transform: translateY(6px);
+   }
+   to {
+     opacity: 1;
+17:18
+transform: translateY(0);
+   }
+ }
+
+ .panel {
+   border-radius: 26px;
+   background: var(--panel);
+   border: 2px solid var(--panelBorder);
+   backdrop-filter: blur(20px);
+   box-shadow: var(--cardShadow);
+ }
+
+ .sectionTitle {
+   font-size: 19px;
+   font-weight: 900;
+   margin-bottom: 4px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+ }
+
+ .sectionSub {
+   font-size: 12px;
+   opacity: .65;
+   margin-bottom: 14px;
+ }
+
+ .subTabs {
+   display: flex;
+   gap: 8px;
+   margin-bottom: 14px;
+   overflow-x: auto;
+ }
+
  .subTabBtn {
-   flex: 1; white-space: nowrap; padding: 10px 12px; border-radius: 14px; border: 2px solid var(--panelBorder);
-   background: var(--panel); color: #ffffff90; font-weight: 800; font-size: 12px; cursor: pointer; transition: .15s ease;
+   flex: 1;
+   white-space: nowrap;
+   padding: 10px 12px;
+   border-radius: 14px;
+   border: 2px solid var(--panelBorder);
+   background: var(--panel);
+   color: #ffffff90;
+   font-weight: 800;
+   font-size: 12px;
+   cursor: pointer;
+   transition: .15s ease;
  }
- .subTabBtn.active { color: white; background: linear-gradient(135deg, #55d9ff30, #a979ff30); border-color: #55d9ff60; }
- .subTabPanel { display: none; animation: tabIn .2s ease; }
- .subTabPanel.active { display: block; }
+
+ .subTabBtn.active {
+   color: white;
+   background: linear-gradient(135deg, #55d9ff30, #a979ff30);
+   border-color: #55d9ff60;
+ }
+
+ .subTabPanel {
+   display: none;
+   animation: tabIn .2s ease;
+ }
+
+ .subTabPanel.active {
+   display: block;
+ }
 
  /* CLICKER PANEL */
- .clickPanel { min-height: 480px; padding: 30px 20px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
- .clickPanel::before { content: ""; position: absolute; width: 320px; height: 320px; background: var(--cyan); filter: blur(140px); opacity: .12; border-radius: 50%; }
- .clickPanel::after { content: ""; position: absolute; bottom: -60px; right: -60px; width: 220px; height: 220px; background: var(--violet); filter: blur(120px); opacity: .12; border-radius: 50%; }
- 
+ .clickPanel {
+   min-height: 480px;
+   padding: 30px 20px 40px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   position: relative;
+   overflow: hidden;
+ }
+
+ .clickPanel::before {
+   content: "";
+   position: absolute;
+   width: 320px;
+   height: 320px;
+   background: var(--cyan);
+   filter: blur(140px);
+   opacity: .12;
+   border-radius: 50%;
+ }
+
+ .clickPanel::after {
+   content: "";
+   position: absolute;
+   bottom: -60px;
+   right: -60px;
+   width: 220px;
+   height: 220px;
+   background: var(--violet);
+   filter: blur(120px);
+   opacity: .12;
+   border-radius: 50%;
+ }
+
  .creatureCard {
-   position: relative; width: min(270px, 72vw); aspect-ratio: 0.82; border-radius: 30px; z-index: 2;
-   border: 3px solid #ffffff30; background: linear-gradient(160deg, #ffffff12, #00000045);
-   display: flex; align-items: center; justify-content: center; margin: 6px auto 24px;
+   position: relative;
+   width: min(270px, 72vw);
+   aspect-ratio: 0.82;
+   border-radius: 30px;
+   z-index: 2;
+   border: 3px solid #ffffff30;
+   background: linear-gradient(160deg, #ffffff12, #00000045);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 6px auto 24px;
    box-shadow: 0 20px 50px #00000080, inset 0 0 30px #00000040;
  }
+
  .creatureCardLvl {
-   position: absolute; top: 12px; left: 12px; background: #00000080; border: 1px solid #ffffff30;
-   padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 900; z-index: 3;
+   position: absolute;
+   top: 12px;
+   left: 12px;
+   background: #00000080;
+   border: 1px solid #ffffff30;
+   padding: 4px 10px;
+   border-radius: 10px;
+   font-size: 11px;
+   font-weight: 900;
+   z-index: 3;
  }
+
  .creatureCardRarity {
-   position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 10px; font-size: 9px; font-weight: 900; z-index: 3;
-   letter-spacing: .5px; background: var(--cyan); color: #070a12;
+   position: absolute;
+   top: 12px;
+   right: 12px;
+   padding: 4px 10px;
+   border-radius: 10px;
+   font-size: 9px;
+   font-weight: 900;
+   z-index: 3;
+   letter-spacing: .5px;
+   background: var(--cyan);
+   color: #070a12;
  }
+
  .creatureCaption {
-   position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); background: #ffffff; color: #09111e;
-   padding: 8px 18px; border-radius: 16px; box-shadow: 0 10px 24px #00000070; z-index: 3; max-width: 92%;
-   display: flex; flex-direction: column; align-items: center; gap: 1px; white-space: nowrap;
+   position: absolute;
+   bottom: -16px;
+   left: 50%;
+   transform: translateX(-50%);
+   background: #ffffff;
+   color: #09111e;
+   padding: 8px 18px;
+   border-radius: 16px;
+   box-shadow: 0 10px 24px #00000070;
+   z-index: 3;
+   max-width: 92%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1px;
+   white-space: nowrap;
  }
- .creatureCaptionName { font-size: 13px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
- .creatureCaptionHint { font-size: 9px; opacity: .6; font-weight: 800; letter-spacing: .3px; }
- 
+
+ .creatureCaptionName {
+   font-size: 13px;
+   font-weight: 900;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   max-width: 100%;
+ }
+
+ .creatureCaptionHint {
+   font-size: 9px;
+   opacity: .6;
+   font-weight: 800;
+   letter-spacing: .3px;
+ }
+
  .brainrot {
-   width: 82%; aspect-ratio: 1; border-radius: 24px; cursor: pointer; position: relative; z-index: 2;
-   touch-action: manipulation; transition: transform .1s ease; user-select: none; display: flex; align-items: center; justify-content: center;
+   width: 82%;
+   aspect-ratio: 1;
+   border-radius: 24px;
+   cursor: pointer;
+   position: relative;
+   z-index: 2;
+   touch-action: manipulation;
+   transition: transform .1s ease;
+   user-select: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
  }
- .brainrot:active { transform: scale(.92); }
- .brainrot img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; pointer-events: none; animation: idleFloat 2.6s ease-in-out infinite; filter: drop-shadow(0 14px 20px #00000080); }
- @keyframes idleFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(-2deg); } }
- 
- .creatureCard.legendaryAura { box-shadow: 0 20px 50px #00000080, 0 0 60px #ffd15a80, 0 0 110px #ffd15a40; animation: legendaryPulseBorder 1.8s ease-in-out infinite; }
- @keyframes legendaryPulseBorder { 0%,100% { border-color: #ffd15a60; } 50% { border-color: #ffe6a0dd; } }
- 
- .powerText { margin-top: 6px; font-size: 17px; font-weight: 900; position: relative; z-index: 2; }
- .comboText { margin-top: 4px; font-size: 13px; font-weight: 900; color: var(--gold); opacity: 0; transition: opacity .2s; position: relative; z-index: 2; min-height: 18px; }
- .comboText.show { opacity: 1; }
- 
- .floatCoin { position: fixed; pointer-events: none; z-index: 9999; font-size: 20px; font-weight: 900; animation: floatUp .8s ease-out forwards; }
- .floatCoin.crit { font-size: 26px; color: var(--gold); text-shadow: 0 0 12px var(--gold); }
- @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -90px) scale(1.35); } }
- 
- .confetti { position: fixed; top: -10px; z-index: 9998; pointer-events: none; border-radius: 2px; animation: confettiFall linear forwards; }
- @keyframes confettiFall { to { transform: translateY(110vh) rotate(540deg); opacity: 0; } }
+
+ .brainrot:active {
+   transform: scale(.92);
+ }
+
+ .brainrot img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: inherit;
+   pointer-events: none;
+   animation: idleFloat 2.6s ease-in-out infinite;
+   filter: drop-shadow(0 14px 20px #00000080);
+ }
+
+ @keyframes idleFloat {
+   0%,100% {
+     transform: translateY(0) rotate(0deg);
+   }
+   50% {
+     transform: translateY(-7px) rotate(-2deg);
+   }
+ }
+
+ .creatureCard.legendaryAura {
+   box-shadow:
+17:18
+0 20px 50px #00000080,
+     0 0 60px #ffd15a80,
+     0 0 110px #ffd15a40;
+   animation: legendaryPulseBorder 1.8s ease-in-out infinite;
+ }
+
+ @keyframes legendaryPulseBorder {
+   0%,100% { border-color: #ffd15a60; }
+   50% { border-color: #ffe6a0dd; }
+ }
+
+ .powerText {
+   margin-top: 6px;
+   font-size: 17px;
+   font-weight: 900;
+   position: relative;
+   z-index: 2;
+ }
+
+ .comboText {
+   margin-top: 4px;
+   font-size: 13px;
+   font-weight: 900;
+   color: var(--gold);
+   opacity: 0;
+   transition: opacity .2s;
+   position: relative;
+   z-index: 2;
+   min-height: 18px;
+ }
+
+ .comboText.show {
+   opacity: 1;
+ }
+
+ .floatCoin {
+   position: fixed;
+   pointer-events: none;
+   z-index: 9999;
+   font-size: 20px;
+   font-weight: 900;
+   animation: floatUp .8s ease-out forwards;
+ }
+
+ .floatCoin.crit {
+   font-size: 26px;
+   color: var(--gold);
+   text-shadow: 0 0 12px var(--gold);
+ }
+
+ @keyframes floatUp {
+   0% {
+     opacity: 1;
+     transform: translate(-50%, 0) scale(1);
+   }
+   100% {
+     opacity: 0;
+     transform: translate(-50%, -90px) scale(1.35);
+   }
+ }
+
+ .confetti {
+   position: fixed;
+   top: -10px;
+   z-index: 9998;
+   pointer-events: none;
+   border-radius: 2px;
+   animation: confettiFall linear forwards;
+ }
+
+ @keyframes confettiFall {
+   to {
+     transform: translateY(110vh) rotate(540deg);
+     opacity: 0;
+   }
+ }
 
  /* WHEEL WIDGET */
  .wheelWidget {
-   width: 100%; margin-top: 14px; padding: 14px 16px; border-radius: 22px; cursor: pointer;
-   background: linear-gradient(120deg, #a979ff30, #55d9ff30); border: 3px solid #a979ff50;
-   display: flex; align-items: center; gap: 12px; color: white; box-shadow: 0 10px 26px #a979ff30;
-   position: relative; overflow: hidden;
+   width: 100%;
+   margin-top: 14px;
+   padding: 14px 16px;
+   border-radius: 22px;
+   cursor: pointer;
+   background: linear-gradient(120deg, #a979ff30, #55d9ff30);
+   border: 3px solid #a979ff50;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   color: white;
+   box-shadow: 0 10px 26px #a979ff30;
+   position: relative;
+   overflow: hidden;
  }
- .wheelWidget:active { transform: scale(.98); }
- .wheelWidgetIcon { font-size: 30px; animation: idleFloat 2.4s ease-in-out infinite; flex-shrink: 0; }
- .wheelWidgetText { flex: 1; text-align: left; min-width: 0; }
- .wheelWidgetTitle { font-weight: 900; font-size: 14px; }
- .wheelWidgetSub { font-size: 11px; opacity: .7; margin-top: 2px; }
- 
+
+ .wheelWidget:active {
+   transform: scale(.98);
+ }
+
+ .wheelWidgetIcon {
+   font-size: 30px;
+   animation: idleFloat 2.4s ease-in-out infinite;
+   flex-shrink: 0;
+ }
+
+ .wheelWidgetText {
+   flex: 1;
+   text-align: left;
+   min-width: 0;
+ }
+
+ .wheelWidgetTitle {
+   font-weight: 900;
+   font-size: 14px;
+ }
+
+ .wheelWidgetSub {
+   font-size: 11px;
+   opacity: .7;
+   margin-top: 2px;
+ }
+
  /* WHEEL FULLSCREEN OVERLAY */
  .wheelFullscreen {
-   position: fixed; inset: 0; z-index: 15000; display: none; flex-direction: column; align-items: center; justify-content: center;
-   background: radial-gradient(circle at 50% 20%, #1c2e4a90, transparent 60%), #060b14f0; backdrop-filter: blur(12px);
-   padding: 24px; text-align: center; opacity: 0; transition: opacity .25s ease;
+   position: fixed;
+   inset: 0;
+   z-index: 15000;
+   display: none;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   background:
+     radial-gradient(circle at 50% 20%, #1c2e4a90, transparent 60%),
+     #060b14f0;
+   backdrop-filter: blur(12px);
+   padding: 24px;
+   text-align: center;
+   opacity: 0;
+   transition: opacity .25s ease;
  }
- .wheelFullscreen.show { display: flex; opacity: 1; }
+
+ .wheelFullscreen.show {
+   display: flex;
+   opacity: 1;
+ }
+
  .wheelCloseBtn {
-   position: absolute; top: calc(16px + env(safe-area-inset-top)); right: 16px; width: 40px; height: 40px; border-radius: 50%;
-   background: #ffffff15; border: 1px solid #ffffff25; color: white; font-size: 18px; cursor: pointer;
+   position: absolute;
+   top: calc(16px + env(safe-area-inset-top));
+   right: 16px;
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   background: #ffffff15;
+   border: 1px solid #ffffff25;
+   color: white;
+   font-size: 18px;
+   cursor: pointer;
  }
- .wheelFullscreenTitle { font-size: 22px; font-weight: 900; }
- .wheelFullscreenSub { font-size: 13px; opacity: .65; margin-top: 6px; max-width: 300px; }
- .wheelOuter { position: relative; width: 240px; height: 240px; margin: 20px auto; z-index: 2; }
- .wheel { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px #ffffff15, 0 20px 50px #00000080; transform: rotate(0deg); }
- .wheelLabels { position:absolute; inset:0; z-index:4; pointer-events:none; }
- .wheelLabel { position:absolute; left:50%; top:50%; width:72px; margin-left:-36px; margin-top:-14px; text-align:center; font-size:11px; font-weight:1000; color:#07101c; transform-origin:36px 14px; }
- .wheelLabel span { display:inline-block; background:#ffffffd9; padding:4px 6px; border-radius:8px; box-shadow:0 3px 8px #00000035; }
- .gameHint { margin-top:7px; font-size:11px; text-align:center; opacity:.68; min-height:16px; }
+
+ .wheelFullscreenTitle {
+   font-size: 22px;
+   font-weight: 900;
+ }
+
+ .wheelFullscreenSub {
+   font-size: 13px;
+   opacity: .65;
+   margin-top: 6px;
+   max-width: 300px;
+ }
+
+ .wheelOuter {
+   position: relative;
+   width: 240px;
+   height: 240px;
+   margin: 20px auto;
+   z-index: 2;
+ }
+
+ .wheel {
+   width: 100%;
+   height: 100%;
+   border-radius: 50%;
+   box-shadow:
+     0 0 0 6px #ffffff15,
+     0 20px 50px #00000080;
+   transform: rotate(0deg);
+ }
+
+ .wheelLabels {
+   position: absolute;
+   inset: 0;
+   z-index: 4;
+   pointer-events: none;
+ }
+
+ .wheelLabel {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   width: 72px;
+   margin-left: -36px;
+   margin-top: -14px;
+   text-align: center;
+   font-size: 11px;
+   font-weight: 1000;
+   color: #07101c;
+   transform-origin: 36px 14px;
+ }
+
+ .wheelLabel span {
+   display: inline-block;
+   background: #ffffffd9;
+   padding: 4px 6px;
+   border-radius: 8px;
+   box-shadow: 0 3px 8px #00000035;
+ }
+
+ .gameHint {
+   margin-top: 7px;
+   font-size: 11px;
+   text-align: center;
+   opacity: .68;
+   min-height: 16px;
+ }
+
  .wheelPointer {
-   position: absolute; top: -7px; left: 50%; transform: translateX(-50%); z-index: 3;
-   width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid var(--gold);
+17:18
+position: absolute;
+   top: -7px;
+   left: 50%;
+   transform: translateX(-50%);
+   z-index: 3;
+   width: 0;
+   height: 0;
+   border-left: 12px solid transparent;
+   border-right: 12px solid transparent;
+   border-top: 20px solid var(--gold);
    filter: drop-shadow(0 4px 6px #00000060);
  }
+
  .wheelSpinBtn {
-   width: 100%; max-width: 280px; padding: 15px; border-radius: 18px; border: 2px solid #ffffffaa;
-   background: linear-gradient(135deg, var(--cyan), var(--blue)); color: white; font-weight: 900; font-size: 15px; cursor: pointer;
-   box-shadow: 0 6px 0 #1b4fb3, 0 14px 34px #3979ff50;
+   width: 100%;
+   max-width: 280px;
+   padding: 15px;
+   border-radius: 18px;
+   border: 2px solid #ffffffaa;
+   background: linear-gradient(135deg, var(--cyan), var(--blue));
+   color: white;
+   font-weight: 900;
+   font-size: 15px;
+   cursor: pointer;
+   box-shadow:
+     0 6px 0 #1b4fb3,
+     0 14px 34px #3979ff50;
  }
- .wheelSpinBtn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
- 
+
+ .wheelSpinBtn:disabled {
+   opacity: .45;
+   cursor: not-allowed;
+   box-shadow: none;
+ }
+
  /* SHOP TAB */
- .shopPanel { padding: 18px; margin-bottom: 14px; }
+ .shopPanel {
+   padding: 18px;
+   margin-bottom: 14px;
+ }
+
  .upgradeCard {
-   width: 100%; color: white; cursor: pointer; text-align: left; padding: 14px; border-radius: 20px;
-   margin-bottom: 12px; background: linear-gradient(135deg, #ffffff14, #ffffff08); border: 2px solid var(--panelBorder);
-   transition: .12s ease; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #00000040;
+   width: 100%;
+   color: white;
+   cursor: pointer;
+   text-align: left;
+   padding: 14px;
+   border-radius: 20px;
+   margin-bottom: 12px;
+   background: linear-gradient(135deg, #ffffff14, #ffffff08);
+   border: 2px solid var(--panelBorder);
+   transition: .12s ease;
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   box-shadow: 0 4px 0 #00000040;
  }
- .upgradeCard:active { transform: translateY(3px); box-shadow: none; }
- .upgradeCard:disabled { opacity: .4; cursor: not-allowed; }
+
+ .upgradeCard:active {
+   transform: translateY(3px);
+   box-shadow: none;
+ }
+
+ .upgradeCard:disabled {
+   opacity: .4;
+   cursor: not-allowed;
+ }
+
  .upgradeIconWrap {
-   width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-   font-size: 22px; flex-shrink: 0; box-shadow: inset 0 0 0 1px #ffffff20;
+   width: 46px;
+   height: 46px;
+   border-radius: 14px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 22px;
+   flex-shrink: 0;
+   box-shadow: inset 0 0 0 1px #ffffff20;
  }
- .up-power .upgradeIconWrap { background: linear-gradient(135deg, var(--cyan), var(--blue)); }
- .up-auto .upgradeIconWrap { background: linear-gradient(135deg, var(--green), #1e9d7d); }
- .up-crit .upgradeIconWrap { background: linear-gradient(135deg, var(--gold), var(--orange)); }
- .upgradeBody { flex: 1; min-width: 0; }
- .upgradeTitle { display: block; font-size: 15px; font-weight: 900; margin-bottom: 3px; }
- .upgradeInfo { display: block; font-size: 12px; opacity: .7; }
- .upgradeLvl { font-size: 11px; font-weight: 900; padding: 5px 10px; border-radius: 10px; background: #00000040; white-space: nowrap; flex-shrink: 0; }
- 
- .prestigeCard { background: linear-gradient(135deg, var(--gold), var(--orange)); border: none; box-shadow: 0 12px 30px #ff8b4240; color: #211303; }
- .prestigeCard .upgradeTitle, .prestigeCard .upgradeInfo { color: #211303; }
- .prestigeCard .upgradeIconWrap { background: #ffffff35; }
+
+ .up-power .upgradeIconWrap {
+   background: linear-gradient(135deg, var(--cyan), var(--blue));
+ }
+
+ .up-auto .upgradeIconWrap {
+   background: linear-gradient(135deg, var(--green), #1e9d7d);
+ }
+
+ .up-crit .upgradeIconWrap {
+   background: linear-gradient(135deg, var(--gold), var(--orange));
+ }
+
+ .upgradeBody {
+   flex: 1;
+   min-width: 0;
+ }
+
+ .upgradeTitle {
+   display: block;
+   font-size: 15px;
+   font-weight: 900;
+   margin-bottom: 3px;
+ }
+
+ .upgradeInfo {
+   display: block;
+   font-size: 12px;
+   opacity: .7;
+ }
+
+ .upgradeLvl {
+   font-size: 11px;
+   font-weight: 900;
+   padding: 5px 10px;
+   border-radius: 10px;
+   background: #00000040;
+   white-space: nowrap;
+   flex-shrink: 0;
+ }
+
+ .prestigeCard {
+   background: linear-gradient(135deg, var(--gold), var(--orange));
+   border: none;
+   box-shadow: 0 12px 30px #ff8b4240;
+   color: #211303;
+ }
+
+ .prestigeCard .upgradeTitle,
+ .prestigeCard .upgradeInfo {
+   color: #211303;
+ }
+
+ .prestigeCard .upgradeIconWrap {
+   background: #ffffff35;
+ }
 
  /* CRYSTAL SHOP */
  .crystalShopSection {
-   border: 3px solid #55d9ff50; background: linear-gradient(160deg, #55d9ff15, #a979ff15);
-   position: relative; overflow: hidden; padding: 18px; margin-bottom: 14px; border-radius: 26px;
+   border: 3px solid #55d9ff50;
+   background: linear-gradient(160deg, #55d9ff15, #a979ff15);
+   position: relative;
+   overflow: hidden;
+   padding: 18px;
+   margin-bottom: 14px;
+   border-radius: 26px;
  }
- .packGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 2; }
+
+ .packGrid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 12px;
+   position: relative;
+   z-index: 2;
+ }
+
  .packCard {
-   border-radius: 22px; padding: 16px 12px; text-align: center; position: relative; overflow: hidden;
-   background: linear-gradient(160deg, #ffffff16, #ffffff06); border: 2px solid #ffffff25;
+   border-radius: 22px;
+   padding: 16px 12px;
+   text-align: center;
+   position: relative;
+   overflow: hidden;
+   background: linear-gradient(160deg, #ffffff16, #ffffff06);
+   border: 2px solid #ffffff25;
    box-shadow: 0 10px 26px #00000040;
  }
- .packCard:active { transform: scale(.97); }
+
+ .packCard:active {
+   transform: scale(.97);
+ }
+
  .packBadge {
-   position: absolute; top: 8px; right: -28px; transform: rotate(35deg); background: linear-gradient(135deg, var(--gold), var(--orange));
-   color: #211303; font-size: 9px; font-weight: 900; padding: 3px 30px; box-shadow: 0 3px 8px #00000040;
+   position: absolute;
+   top: 8px;
+   right: -28px;
+   transform: rotate(35deg);
+   background: linear-gradient(135deg, var(--gold), var(--orange));
+   color: #211303;
+   font-size: 9px;
+   font-weight: 900;
+   padding: 3px 30px;
+   box-shadow: 0 3px 8px #00000040;
  }
- .packCrystalArt { margin: 0 auto 6px; font-size: 34px; }
- .packName { font-weight: 900; font-size: 12px; margin-bottom: 4px; }
- .packAmount { font-weight: 900; font-size: 15px; color: var(--cyan); margin-bottom: 10px; }
+
+ .packCrystalArt {
+   margin: 0 auto 6px;
+   font-size: 34px;
+ }
+
+ .packName {
+   font-weight: 900;
+   font-size: 12px;
+   margin-bottom: 4px;
+ }
+
+ .packAmount {
+   font-weight: 900;
+   font-size: 15px;
+   color: var(--cyan);
+   margin-bottom: 10px;
+ }
+
  .packBuyBtn {
-   padding: 8px 14px; border: 2px solid #ffffffaa; border-radius: 13px; background: linear-gradient(135deg, var(--gold), var(--orange));
-   color: #211303; font-weight: 900; font-size: 12px; cursor: pointer; box-shadow: 0 4px 0 #c25a1f;
- }
-
- /* CASES TAB & MULTI CASE SELECTOR */
- .caseSelectorGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
- .caseSelectCard { position: relative; text-align: center; padding: 14px; border-radius: 20px; color: white; cursor: pointer; border: 2px solid #ffffff15; background: linear-gradient(145deg,#ffffff12,#ffffff06); transition: .18s ease; overflow: hidden; }
- .caseSelectCard.active { border-color: var(--gold); box-shadow: 0 0 28px #ffd15a30; transform: translateY(-2px); }
- .caseSelectImg { width: 100%; aspect-ratio: 1.1; object-fit: cover; border-radius: 14px; margin-bottom: 8px; filter: drop-shadow(0 8px 16px #00000060); }
- .caseSelectName { font-weight: 900; font-size: 13px; }
- .caseSelectDesc { font-size: 10px; opacity: .6; margin-top: 2px; }
- .caseSelectCost { margin-top: 8px; font-size: 13px; font-weight: 900; color: var(--gold); }
- .caseSelectTag { position: absolute; right: 9px; top: 9px; padding: 4px 7px; border-radius: 9px; font-size: 8px; font-weight: 900; background: #00000070; border: 1px solid #ffffff20; }
- 
- .casesHero { padding: 24px 18px; text-align: center; margin-bottom: 14px; position: relative; overflow: hidden; border: 3px solid #ffd15a50; border-radius: 26px; }
- .chestIcon { width: 140px; height: 120px; object-fit: cover; border-radius: 20px; margin: 0 auto 10px; animation: chestFloat 2.4s ease-in-out infinite; filter: drop-shadow(0 10px 20px #00000080); }
- @keyframes chestFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
- .caseBackBtn { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; padding: 9px 15px; border: 2px solid var(--panelBorder); border-radius: 14px; background: var(--panel); color: white; font-weight: 800; font-size: 12px; cursor: pointer; }
- .oddsRow { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 14px 0 4px; }
- .oddsChip { padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 900; background: #00000040; border: 1px solid #ffffff15; }
- .pityRow { margin-top: 10px; font-size: 11px; font-weight: 800; opacity: .75; }
- .pityBar { margin-top: 6px; height: 6px; border-radius: 10px; background: #00000050; overflow: hidden; }
- .pityBar div { height: 100%; background: linear-gradient(90deg, var(--gold), var(--orange)); border-radius: inherit; transition: width .3s ease; }
- 
- .openCaseBtn {
-   margin-top: 16px; width: 100%; max-width: 320px; padding: 15px; border: 3px solid #ffffffaa; border-radius: 20px;
-   background: linear-gradient(135deg, var(--gold), var(--orange)); color: #211303; font-weight: 900; font-size: 16px;
-   cursor: pointer; box-shadow: 0 6px 0 #c25a1f, 0 14px 34px #ff8b4250;
- }
- .openCaseBtn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
- 
- /* REEL ANIMATION */
- .caseReelWrap { margin-top: 14px; }
- .caseReel { position: relative; height: 100px; border-radius: 20px; overflow: hidden; background: #060b14; border: 2px solid #ffd15a50; box-shadow: inset 0 0 30px #00000060; }
- .caseReelTrack { position: absolute; top: 0; left: 0; height: 100%; display: flex; will-change: transform; }
- .caseReelItem { flex-shrink: 0; width: 90px; height: 100%; display: flex; align-items: center; justify-content: center; border-right: 1px solid #ffffff10; padding: 6px; }
- .caseReelItem img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
- .caseReelItem.winner { box-shadow: inset 0 0 0 3px var(--gold), 0 0 20px #ffd15a80; }
- .caseReelPointer { position: absolute; top: 0; left: 50%; width: 3px; height: 100%; background: var(--gold); transform: translateX(-50%); z-index: 3; box-shadow: 0 0 12px var(--gold); }
- 
- /* COLLECTION TAB */
- .collectionGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
- .collectCard { border: 2px solid #ffffff15; border-radius: 18px; overflow: hidden; background: #080f1c; cursor: pointer; transition: .15s ease; text-align: center; }
- .collectCard.active { border-color: var(--gold); box-shadow: 0 0 20px #ffd15a30; }
- .collectCard.locked { filter: grayscale(1); opacity: .45; }
- .collectCard img { width: 100%; height: 110px; object-fit: cover; }
- .collectCardBody { padding: 8px; }
- .collectCardName { font-size: 11px; font-weight: 900; display: block; }
- .collectCardRarity { font-size: 9px; color: var(--cyan); display: block; margin-top: 2px; }
- 
- .fleetGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
- .aircraftCard { border: 1px solid var(--panelBorder); border-radius: 18px; overflow: hidden; background: #09101d; }
- .aircraftCard img { width: 100%; height: 120px; object-fit: cover; }
- .aircraftCardBody { padding: 10px; }
- .aircraftCardBody b { font-size: 13px; display: block; }
- .aircraftCardBody p { font-size: 10px; opacity: .65; margin-top: 3px; }
- 
- /* MINI GAMES & CANVAS */
- .gameGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
- .gameCard { padding: 14px; border: 2px solid var(--panelBorder); border-radius: 18px; background: linear-gradient(145deg,#ffffff10,#ffffff04); cursor: pointer; position: relative; }
- .gameCard b { font-size: 14px; display: block; }
- .gameCard p { font-size: 10px; opacity: .65; margin: 4px 0; }
- .gameCard .gameMeta { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 10px; font-weight: 900; }
- .gameCard .gameAttempts { color: var(--gold); }
- .gameCard .gameReward { color: var(--cyan); }
- 
- .gameCanvasWrap { display: none; margin-top: 14px; padding: 14px; border-radius: 20px; background: #060b14; border: 2px solid var(--panelBorder); }
- .gameCanvasWrap.show { display: block; animation: tabIn .25s ease; }
- .gameCanvasHead { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 900; font-size: 14px; }
- .gameCanvas { width: 100%; height: 280px; border-radius: 16px; background: #050a12; border: 1px solid #ffffff15; touch-action: none; }
- .gameStartBtn { width: 100%; margin-top: 10px; border: none; border-radius: 14px; padding: 12px; background: linear-gradient(135deg, var(--cyan), var(--blue)); color: white; font-weight: 900; cursor: pointer; }
-
- /* MODAL & TOAST */
- .modal { position: fixed; inset: 0; background: #02050be6; backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 18px; }
- .modal.show { display: flex; animation: tabIn .2s ease; }
- .modalBox { width: min(420px, 100%); padding: 24px; text-align: center; border: 2px solid var(--panelBorder); border-radius: 26px; background: linear-gradient(145deg,#0d1627,#060b14); box-shadow: 0 30px 90px #000; }
- .modalIcon { font-size: 54px; animation: chestFloat 2s ease-in-out infinite; }
- .modal h2 { margin: 10px 0 6px; font-size: 20px; font-weight: 900; }
- .modal p { color: #aebbd0; font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
- .modal button { width: 100%; padding: 14px; border: 0; border-radius: 16px; background: linear-gradient(135deg, var(--gold), var(--orange)); font-weight: 900; cursor: pointer; color: #211303; }
- 
- .toast { position: fixed; left: 50%; bottom: 85px; transform: translate(-50%, 20px); opacity: 0; z-index: 11000; background: #f6f8ff; color: #070a12; padding: 10px 16px; border-radius: 14px; font-weight: 900; font-size: 12px; transition: .25s ease; pointer-events: none; }
- .toast.show { opacity: 1; transform: translate(-50%, 0); }
- 
- @media (max-width: 760px) {
-   .collectionGrid { grid-template-columns: repeat(3, 1fr); }
-   .fleetGrid { grid-template-columns: 1fr; }
- }
- @media (max-width: 520px) {
-   .collectionGrid { grid-template-columns: repeat(2, 1fr); }
-   .gameGrid { grid-template-columns: 1fr; }
-   .caseSelectorGrid { grid-template-columns: 1fr; }
- }
-</style>
-</head>
-<body>
-
-<!-- SPLASH SCREEN -->
-<div class="splashScreen" id="splash">
-  <div class="splashLogo">✈️</div>
-  <div class="splashTitle">AIR<span>CLICKER</span></div>
-  <div class="splashSub">Sky Legends Arcade Edition</div>
-  <div class="splashBar"><div class="splashBarFill"></div></div>
-</div>
-
-<div class="bgParticles" id="bgParticles"></div>
-<div class="bgPattern"></div>
-
-<div class="container">
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo">
-      <span class="logoEmoji">✈️</span>
-      <div class="logoText">AIR<span>CLICKER</span></div>
-      <div class="prestigeBadge" id="prestigeBadge">⭐ <span id="prestigeLv">0</span></div>
-    </div>
-    <div class="headerRight">
-      <button class="iconBtn" id="soundBtn">🔊</button>
-      <div class="crystalPill" id="crystalPill">💎 <span id="crystals">0</span></div>
-      <div class="coins" id="coinsPill">
-        <span>💰 <span id="coins">0</span></span>
-        <span class="coinsPerSec">+<span id="cps">0</span>/сек</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- SPEECH BUBBLE -->
-  <div class="speechBubble" id="speechBubble">
-    <span class="speechEmoji">👨‍✈️</span>
-    <span id="speechText">Добро пожаловать в Sky Legends! Нажимай на самолёт и лети к успеху.</span>
-  </div>
-
-  <!-- LEVEL BOX -->
-  <div class="levelBox">
-    <div class="levelTop">
-      <span>⚡ Уровень пилота <span id="level">1</span></span>
-      <span id="xpText">0 / 120 XP</span>
-    </div>
-    <div class="progress"><div class="progressBar" id="xpBar"></div></div>
-  </div>
-
-  <!-- TAB 1: CLICKER -->
-  <main class="tabPanel active" id="tab-click">
-    <div class="panel clickPanel" id="clickPanel">
-      <div class="creatureCard" id="planeCard">
-        <div class="creatureCardLvl" id="cardLvl">Lv.1</div>
-        <div class="creatureCardRarity" id="cardRarity">COMMON</div>
-        <div class="brainrot" id="planeBtn">
-          <img id="planeImg" src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=85">
-        </div>
-        <div class="creatureCaption">
-          <span class="creatureCaptionName" id="planeName">Airbus A320</span>
-          <span class="creatureCaptionHint">НАЖМИ / TAP</span>
-        </div>
-      </div>
-      <div class="powerText">+<span id="power">1</span> 💰 за клик</div>
-      <div class="comboText" id="comboText"></div>
-
-      <!-- WHEEL WIDGET -->
-      <div class="wheelWidget" id="openWheelWidget">
-        <div class="wheelWidgetIcon">🎡</div>
-        <div class="wheelWidgetText">
-          <div class="wheelWidgetTitle">Ежедневное Колесо Фортуны</div>
-          <div class="wheelWidgetSub" id="wheelWidgetSub">Бесплатный спин доступен!</div>
-        </div>
-        <div>➔</div>
-      </div>
-    </div>
-  </main>
-
-  <!-- TAB 2: SHOP & UPGRADES -->
-  <main class="tabPanel" id="tab-shop">
-    <div class="subTabs">
-      <button class="subTabBtn active" data-sub="upgrades">⚡ Прокачка</button>
-      <button class="subTabBtn" data-sub="skills">🌳 Навыки</button>
-      <button class="subTabBtn" data-sub="crystals">💎 Кристаллы</button>
-    </div>
-
-    <!-- UPGRADES SUBPANEL -->
-    <div class="subTabPanel active" id="sub-upgrades">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">⚡ Улучшения самолёта</div>
-        <div class="sectionSub">Повышай доход от кликов и автопилот.</div>
-        
-        <button class="upgradeCard up-power" id="upPower">
-          <div class="upgradeIconWrap">⚡</div>
-          <div class="upgradeBody">
-            <span class="upgradeTitle">Усилить двигатель</span>
-            <span class="upgradeInfo">+1 💰 за клик • <span id="powerCost">30.000</span> 💰</span>
-          </div>
-          <span class="upgradeLvl" id="powerLv">Lv.1</span>
-        </button>
-
-        <button class="upgradeCard up-auto" id="upAuto">
-          <div class="upgradeIconWrap">🤖</div>
-          <div class="upgradeBody">
-            <span class="upgradeTitle">Автопилот</span>
-            <span class="upgradeInfo">+1 💰/сек • <span id="autoCost">30.000</span> 💰</span>
-          </div>
-          <span class="upgradeLvl" id="autoLv">Lv.0</span>
-        </button>
-
-        <button class="upgradeCard up-crit" id="upCrit">
-          <div class="upgradeIconWrap">💥</div>
-          <div class="upgradeBody">
-            <span class="upgradeTitle">Шанс крита</span>
-            <span class="upgradeInfo">+2% крит ×5 • <span id="critCost">30.000</span> 💰</span>
-          </div>
-          <span class="upgradeLvl" id="critLv">5%</span>
-        </button>
-
-        <button class="upgradeCard prestigeCard" id="prestigeBtn" disabled>
-          <div class="upgradeIconWrap">🌌</div>
-          <div class="upgradeBody">
-            <span class="upgradeTitle">Перерождение</span>
-            <span class="upgradeInfo" id="prestigeInfo">Сброс прогресса за постоянный множитель дохода.</span>
-          </div>
-        </button>
-      </div>
-    </div>
-
-    <!-- SKILLS SUBPANEL -->
-    <div class="subTabPanel" id="sub-skills">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🌳 Навыки пилота</div>
-        <div class="sectionSub">Постоянные бонусы за кристаллы 💎.</div>
-        <div id="skillsList"></div>
-      </div>
-    </div>
-
-    <!-- CRYSTALS SUBPANEL -->
-    <div class="subTabPanel" id="sub-crystals">
-      <div class="crystalShopSection">
-        <div class="sectionTitle">💎 Магазин Кристаллов</div>
-        <div class="sectionSub">Кристаллы нужны для покупки редких навыков пилота.</div>
-        <div class="packGrid">
-          <div class="packCard">
-            <div class="packCrystalArt">💎</div>
-            <div class="packName">Горсть кристаллов</div>
-            <div class="packAmount">50 💎</div>
-            <button class="packBuyBtn" data-buy-crystals="50">Получить</button>
-          </div>
-          <div class="packCard">
-            <div class="packBadge">POPULAR</div>
-            <div class="packCrystalArt">💎✨</div>
-            <div class="packName">Сундук кристаллов</div>
-            <div class="packAmount">200 💎</div>
-            <button class="packBuyBtn" data-buy-crystals="200">Получить</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- TAB 3: CASES -->
-  <main class="tabPanel" id="tab-cases">
-    <div id="caseListView">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🎰 Выбери кейс</div>
-        <div class="sectionSub">Открывай кейсы и пополняй ангар уникальными самолётами.</div>
-        <div class="caseSelectorGrid" id="caseGrid"></div>
-      </div>
-    </div>
-
-    <div class="subTabPanel" id="caseDetailView">
-      <button class="caseBackBtn" id="backToCases">← Назад к кейсам</button>
-      <div class="casesHero">
-        <img class="chestIcon" id="caseHeroImg" src="">
-        <h2 id="caseTitle"></h2>
-        <div class="sectionSub" id="caseDesc"></div>
-        <div class="oddsRow" id="oddsRow"></div>
-        <div class="pityRow">
-          <span id="pityText">🎯 Гарантия Legendary+ через 40 открытий</span>
-          <div class="pityBar"><div id="pityBarFill" style="width:0%"></div></div>
-        </div>
-        <button class="openCaseBtn" id="openCaseBtn">ОТКРЫТЬ КЕЙС • <span id="caseCost"></span> 💰</button>
-        <div class="caseReelWrap" id="caseReelWrap"></div>
-      </div>
-    </div>
-  </main>
-
-  <!-- TAB 4: COLLECTION & GAMES -->
-  <main class="tabPanel" id="tab-collection">
-    <div class="subTabs">
-      <button class="subTabBtn active" data-sub="hangar">🧩 Коллекция</button>
-      <button class="subTabBtn" data-sub="fleet">🛩️ Авиапарк</button>
-      <button class="subTabBtn" data-sub="games">🎮 Мини-игры</button>
-      <button class="subTabBtn" data-sub="achievements">🏆 Достижения</button>
-    </div>
-
-    <div class="subTabPanel active" id="sub-hangar">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🧩 Моя коллекция самолётов</div>
-        <div class="sectionSub">Выбирай найденный самолёт для активного клика.</div>
-        <div class="collectionGrid" id="collectionGrid"></div>
-      </div>
-    </div>
-
-    <div class="subTabPanel" id="sub-fleet">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🛩️ Мировой авиапарк</div>
-        <div class="sectionSub">Легендарные представители гражданской и военной авиации.</div>
-        <div class="fleetGrid">
-          <div class="aircraftCard"><img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=85"><div class="aircraftCardBody"><b>Airbus A350</b><p>Дальний широкофюзеляжный лайнер.</p></div></div>
-          <div class="aircraftCard"><img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=800&q=85"><div class="aircraftCardBody"><b>Boeing 747</b><p>Легендарный Jumbo Jet.</p></div></div>
-          <div class="aircraftCard"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=85"><div class="aircraftCardBody"><b>Boeing 787</b><p>Dreamliner нового поколения.</p></div></div>
-          <div class="aircraftCard"><img src="https://images.unsplash.com/photo-1583225276453-0d2a6a4a1d1d?auto=format&fit=crop&w=800&q=85"><div class="aircraftCardBody"><b>Airbus A380</b><p>Двухпалубный гигант небес.</p></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="subTabPanel" id="sub-games">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🎮 Аркадные Мини-игры</div>
-        <div class="sectionSub">Максимум 10 попыток в день на каждую игру (всего 40).</div>
-        <div class="gameGrid" id="gameGrid"></div>
-
-        <div class="gameCanvasWrap" id="gameCanvasWrap">
-          <div class="gameCanvasHead"><span id="gameTitle">Игра</span><span id="gameScore">Счёт: 0</span></div>
-          <canvas class="gameCanvas" id="canvas" width="900" height="420"></canvas>
-          <button class="gameStartBtn" id="gameStartBtn">СТАРТ ИГРЫ</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="subTabPanel" id="sub-achievements">
-      <div class="panel shopPanel">
-        <div class="sectionTitle">🏆 Награды и достижения</div>
-        <div id="achievementsList"></div>
-      </div>
-    </div>
-  </main>
-
-  <!-- BOTTOM NAVIGATION BAR -->
-  <nav class="navBar">
-    <button class="navItem active" data-tab="tab-click"><span class="navIcon">✈️</span><span>Клик</span></button>
-    <button class="navItem" data-tab="tab-shop"><span class="navIcon">🏪</span><span>Магазин</span></button>
-    <button class="navItem" data-tab="tab-cases"><span class="navIcon">🎰</span><span>Кейсы</span></button>
-    <button class="navItem" data-tab="tab-collection"><span class="navIcon">🧩</span><span>Коллекция</span></button>
-  </nav>
-</div>
-
-<!-- FULLSCREEN WHEEL MODAL -->
-<div class="wheelFullscreen" id="wheelModal">
-  <button class="wheelCloseBtn" id="closeWheelModal">✕</button>
-  <div class="wheelFullscreenTitle">🎡 Колесо Фортуны</div>
-  <div class="wheelFullscreenSub">Крути каждый день и забирай ценные призы!</div>
-  <div class="wheelOuter">
-    <div class="wheelPointer"></div>
-    <div class="wheel" id="wheelDisk" style="background: conic-gradient(#55d9ff 0 45deg, #3979ff 45deg 90deg, #a979ff 90deg 135deg, #52e0a1 135deg 180deg, #ff5876 180deg 225deg, #ff8b42 225deg 270deg, #ffd15a 270deg 315deg, #8996ad 315deg);"></div>
-    <div class="wheelLabels" id="wheelLabels"></div>
-  </div>
-  <button class="wheelSpinBtn" id="spinWheelBtn">КРУТИТЬ КОЛЕСО</button>
-  <div class="gameHint" id="wheelHint"></div>
-</div>
-
-<!-- MODAL & TOAST -->
-<div class="modal" id="modal"><div class="modalBox"><div class="modalIcon" id="modalIcon">🎉</div><h2 id="modalTitle"></h2><p id="modalText"></p><button id="modalBtn">ЗАБРАТЬ</button></div></div>
-<div class="toast" id="toast"></div>
-
-<script>
-// TELEGRAM WEBAPP INTEGRATION
-if (window.Telegram && window.Telegram.WebApp) {
-  window.Telegram.WebApp.ready();
-  window.Telegram.WebApp.expand();
-}
-
-const $ = id => document.getElementById(id);
-
-// GAME DATA
-const planes = [
-  {id:"a320", name:"Airbus A320", rarity:"Common", bonus:1, image:"https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=85"},
-  {id:"b737", name:"Boeing 737", rarity:"Common", bonus:1.15, image:"https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=800&q=85"},
-  {id:"e190", name:"Embraer E190", rarity:"Rare", bonus:1.35, image:"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=85"},
-  {id:"a330", name:"Airbus A330", rarity:"Rare", bonus:1.55, image:"https://images.unsplash.com/photo-1529074963764-98f45c47344b?auto=format&fit=crop&w=800&q=85"},
-  {id:"b787", name:"Boeing 787", rarity:"Epic", bonus:1.9, image:"https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=800&q=85"},
-  {id:"a350", name:"Airbus A350", rarity:"Epic", bonus:2.2, image:"https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=85"},
-  {id:"b777", name:"Boeing 777", rarity:"Legendary", bonus:2.8, image:"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=85"},
-  {id:"a380", name:"Airbus A380", rarity:"Legendary", bonus:3.5, image:"https://images.unsplash.com/photo-1583225276453-0d2a6a4a1d1d?auto=format&fit=crop&w=800&q=85"},
-  {id:"concorde", name:"Concorde", rarity:"Secret", bonus:5, image:"https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?auto=format&fit=crop&w=800&q=85"},
-  {id:"sr71", name:"SR-71 Blackbird", rarity:"Secret", bonus:7, image:"https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=85"}
-];
-
-const cases = [
-  {id:"cadet", name:"CADET CASE", cost:100000, desc:"Первый ангар новичка", img:"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=85", odds:{Common:75,Rare:25}},
-  {id:"captain", name:"CAPTAIN CASE", cost:300000, desc:"Серьёзная авиация", img:"https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=900&q=85", odds:{Common:45,Rare:45,Epic:10}},
-  {id:"ace", name:"ACE CASE", cost:450000, desc:"Только элитные борты", img:"https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=900&q=85", odds:{Rare:45,Epic:45,Legendary:10}},
-  {id:"legend", name:"LEGEND CASE", cost:600000, desc:"Ангар редких легенд", img:"https://images.unsplash.com/photo-1583225276453-0d2a6a4a1d1d?auto=format&fit=crop&w=900&q=85", odds:{Epic:50,Legendary:42,Secret:8}},
-  {id:"mythic", name:"MYTHIC CASE", cost:800000, desc:"Секретные гиперзвуковые модели", img:"https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?auto=format&fit=crop&w=900&q=85", odds:{Legendary:65,Secret:35}}
-];
-
-// STATE MANAGEMENT
-let S = JSON.parse(localStorage.getItem("airClickerSave") || "null") || {
-  coins: 0, power: 1, powerLv: 1, auto: 0, autoLv: 0, crit: 5, critLv: 0,
-  clicks: 0, total: 0, crystals: 10, collected: ["a320"], active: "a320",
-  cases: 0, pity: 0, prestige: 0, skills: {}, ach: [],
-  gameAttempts: { date: new Date().toDateString(), counts: [0, 0, 0, 0] },
-  wheelLastSpinAt: 0
-};
-
-// RESET DAILY ATTEMPTS
-function checkDailyReset() {
-  const today = new Date().toDateString();
-  if (!S.gameAttempts || S.gameAttempts.date !== today) {
-    S.gameAttempts = { date: today, counts: [0, 0, 0, 0] };
-  }
-}
-checkDailyReset();
-if (typeof S.wheelLastSpinAt !== "number") S.wheelLastSpinAt = 0;
-
-let soundOn = localStorage.getItem("airSound") !== "off";
-let selectedCase = "cadet";
-let audioCtx = null;
-let isOpeningCase = false;
-
-function save() { localStorage.setItem("airClickerSave", JSON.stringify(S)); }
-function fmt(n) { return Math.floor(n).toLocaleString("ru-RU"); }
-
-// AUDIO SYNTHESIZER WITH TICK SOUND
-function beep(freq = 600, duration = 0.06, type = "sine", vol = 0.04) {
-  if (!soundOn) return;
-  try {
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-    osc.type = type; osc.frequency.value = freq; gain.gain.value = vol;
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.stop(audioCtx.currentTime + duration);
-  } catch (e) {}
-}
-
-const snd = {
-  click: () => beep(620, .05),
-  tick: () => beep(850, .015, "triangle", .05),
-  crit: () => { beep(850, .1, "triangle", .07); setTimeout(() => beep(1150, .14, "triangle", .06), 70); },
-  buy: () => beep(380, .1, "square", .04),
-  win: () => { beep(500, .12); setTimeout(() => beep(750, .15), 100); setTimeout(() => beep(1000, .22), 210); }
-};
-
-// INITIALIZATION
-setTimeout(() => { $("splash").classList.add("hide"); }, 1100);
-
-// NAVIGATION SYSTEM
-document.querySelectorAll(".navItem").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".navItem").forEach(x => x.classList.remove("active"));
-    document.querySelectorAll(".tabPanel").forEach(x => x.classList.remove("active"));
-    btn.classList.add("active");
-    $(btn.dataset.tab).classList.add("active");
-  };
-});
-
-document.querySelectorAll(".subTabBtn").forEach(btn => {
-  btn.onclick = () => {
-    const parent = btn.closest(".tabPanel");
-    parent.querySelectorAll(".subTabBtn").forEach(x => x.classList.remove("active"));
-    parent.querySelectorAll(".subTabPanel").forEach(x => x.classList.remove("active"));
-    btn.classList.add("active");
-    $("sub-" + btn.dataset.sub).classList.add("active");
-  };
-});
-
-// SOUND TOGGLE
-$("soundBtn").textContent = soundOn ? "🔊" : "🔇";
-$("soundBtn").onclick = () => {
-  soundOn = !soundOn;
-  localStorage.setItem("airSound", soundOn ? "on" : "off");
-  $("soundBtn").textContent = soundOn ? "🔊" : "🔇";
-  if (soundOn) beep(700, .08);
-};
-
-// HELPER FUNCTIONS
-function getActivePlane() { return planes.find(p => p.id === S.active) || planes[0]; }
-
-function updateUI() {
-  checkDailyReset();
-  const p = getActivePlane();
-  $("coins").textContent = fmt(S.coins);
-  $("crystals").textContent = fmt(S.crystals);
-  $("power").textContent = S.power;
-  $("cps").textContent = fmt(S.auto * (1 + S.prestige * .1));
-  
-  const lv = Math.floor(S.clicks / 120) + 1;
-  const xp = S.clicks % 120;
-  $("level").textContent = lv;
-  $("xpText").textContent = `${xp} / 120 XP`;
-  $("xpBar").style.width = (xp / 120 * 100) + "%";
-  
-  // PLANE CARD
-  $("planeImg").src = p.image;
-  $("planeName").textContent = p.name;
-  $("cardRarity").textContent = p.rarity.toUpperCase();
-  $("cardLvl").textContent = "Lv." + lv;
-  
-  if (["Legendary", "Secret"].includes(p.rarity)) {
-    $("planeCard").classList.add("legendaryAura");
-  } else {
-    $("planeCard").classList.remove("legendaryAura");
-  }
-  
-  // UPGRADES (COSTS FROM 30.000 TO 30.000)
-  const pCost = 800000 * Math.pow(1.85, S.powerLv - 1);
-  const aCost = 900000 * Math.pow(2, S.autoLv);
-  const cCost = 1000000 * Math.pow(2.1, S.critLv);
-  
-  $("powerCost").textContent = fmt(pCost);
-  $("autoCost").textContent = fmt(aCost);
-  $("critCost").textContent = fmt(cCost);
-  $("powerLv").textContent = "Lv." + S.powerLv;
-  $("autoLv").textContent = "Lv." + S.autoLv;
-  $("critLv").textContent = S.crit + "%";
-  
-  $("upPower").disabled = S.coins < pCost;
-  $("upAuto").disabled = S.coins < aCost;
-  $("upCrit").disabled = S.coins < cCost || S.crit >= 50;
-  
-  // PRESTIGE
-  const need = 500000;
-  $("prestigeBtn").disabled = S.total < need;
-  if (S.prestige > 0) {
-    $("prestigeBadge").style.display = "inline-flex";
-    $("prestigeLv").textContent = S.prestige;
-  }
-  
-  renderCollection();
-  renderCases();
-  renderSkills();
-  renderGames();
-  renderAchievements();
-}
-
-// CLICKER LOGIC (GRADUAL COMBO UP TO 40.0)
-$("planeBtn").onclick = (e) => {
-  const now = performance.now();
-  if (!S._last) S._last = now;
-  
-  if (now - S._last < 900) {
-    if (!S._combo || S._combo < 1) {
-      S._combo = 1.00;
-    } else if (Math.abs(S._combo - 1.00) < 0.01) {
-      S._combo = 1.20;
-    } else if (Math.abs(S._combo - 1.20) < 0.01) {
-      S._combo = 1.33;
-    } else {
-      S._combo += Math.max(0.05, 0.5 / Math.sqrt(S._combo));
-    }
-  } else {
-    S._combo = 1.00;
-  }
-  
-  S._combo = Math.min(S._combo, 40.0);
-  S._last = now;
-  
-  const p = getActivePlane();
-  const isCrit = Math.random() * 100 < S.crit;
-  const mult = S._combo * (isCrit ? 5 : 1) * (1 + S.prestige * .1);
-  const earn = Math.max(1, Math.floor(S.power * p.bonus * mult));
-  
-  S.coins += earn;
-  S.total += earn;
-  S.clicks++;
-  
-  if (isCrit) snd.crit(); else snd.click();
-  
-  spawnFloatText((isCrit ? "💥 " : "") + "+" + fmt(earn) + " 💰", e.clientX, e.clientY, isCrit);
-  
-  if (S._combo >= 1.0) {
-    const comboDisplay = (S._combo >= 40) ? "40.0" : S._combo.toFixed(2);
-    $("comboText").textContent = `🔥 COMBO ×${comboDisplay}`;
-    $("comboText").classList.add("show");
-  } else {
-    $("comboText").classList.remove("show");
-  }
-  
-  $("coinsPill").classList.add("bump");
-  setTimeout(() => $("coinsPill").classList.remove("bump"), 150);
-  
-  updateUI();
-  save();
-};
-
-function spawnFloatText(txt, x, y, crit) {
-  const el = document.createElement("div");
-  el.className = "floatCoin" + (crit ? " crit" : "");
-  el.textContent = txt;
-  el.style.left = x + "px";
-  el.style.top = y + "px";
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 800);
-}
-
-// AUTOPILOT TICK
-setInterval(() => {
-  if (S.auto > 0) {
-    const earn = S.auto * (1 + S.prestige * .1);
-    S.coins += earn;
-    S.total += earn;
-    updateUI();
-    save();
-  }
-}, 1000);
-
-// SHOP ACTIONS
-$("upPower").onclick = () => buyUpgrade("power");
-$("upAuto").onclick = () => buyUpgrade("auto");
-$("upCrit").onclick = () => buyUpgrade("crit");
-
-function buyUpgrade(type) {
-  const upgradeCost = level => 30000 * Math.pow(1.5, Math.max(0, level));
-  const costs = {
-    power: upgradeCost(S.powerLv - 1),
-    auto: upgradeCost(S.autoLv),
-    crit: upgradeCost(S.critLv)
-  };
-  const cost = costs[type];
-  if (S.coins < cost) return;
-  S.coins -= cost;
-  
-  if (type === "power") { S.power++; S.powerLv++; }
-  if (type === "auto") { S.auto++; S.autoLv++; }
-  if (type === "crit") { S.crit += 2; S.critLv++; }
-  
-  snd.buy();
-  updateUI();
-  save();
-}
-
-// SKILLS SYSTEM
-const skillDefs = [
-  ["engine", "🚀", "Турбо-наддув", "+5% к клику", 25],
-  ["radar", "📡", "Сверхчувствительный Радар", "+5% к шансу крита", 35],
-  ["fuel", "⛽", "Авиационное Топливо", "+5% к автодоходу", 45]
-];
-
-function renderSkills() {
-  $("skillsList").innerHTML = skillDefs.map(s => `
-    <div class="upgradeCard">
-      <div class="upgradeIconWrap">${s[1]}</div>
-      <div class="upgradeBody">
-        <span class="upgradeTitle">${s[2]}</span>
-        <span class="upgradeInfo">${s[3]} • Lv.${S.skills[s[0]] || 0}</span>
-      </div>
-      <button class="packBuyBtn" onclick="buySkill('${s[0]}', ${s[4]})">💎 ${s[4]}</button>
-    </div>
-  `).join("");
-}
-
-window.buySkill = (id, cost) => {
-  if (S.crystals < cost) return showToast("Недостаточно кристаллов!");
-  S.crystals -= cost;
-  S.skills[id] = (S.skills[id] || 0) + 1;
-  snd.buy();
-  showToast("Навык успешно изучен!");
-  updateUI();
-  save();
-};
-
-document.querySelectorAll("[data-buy-crystals]").forEach(btn => {
-  btn.onclick = () => {
-    const amount = +btn.dataset.buyCrystals;
-    S.crystals += amount;
-    snd.win();
-    showToast(`Получено +${amount} 💎!`);
-    updateUI();
-    save();
-  };
-});
-
-// CASES SYSTEM WITH REALTIME SYNCHRONIZED TICK SOUND & LONGER SPIN
-function renderCases() {
-  $("caseGrid").innerHTML = cases.map(c => `
-    <div class="caseSelectCard ${selectedCase === c.id ? "active" : ""}" onclick="openCaseDetail('${c.id}')">
-      <span class="caseSelectTag">${Object.keys(c.odds).slice(-1)[0]}</span>
-      <img class="caseSelectImg" src="${c.img}">
-      <div class="caseSelectName">${c.name}</div>
-      <div class="caseSelectDesc">${c.desc}</div>
-      <div class="caseSelectCost">💰 ${fmt(c.cost)}</div>
-    </div>
-  `).join("");
-}
-
-window.openCaseDetail = (id) => {
-  selectedCase = id;
-  const c = cases.find(x => x.id === id);
-  $("caseListView").style.display = "none";
-  $("caseDetailView").classList.add("active");
-  $("caseHeroImg").src = c.img;
-  $("caseTitle").textContent = c.name;
-  $("caseDesc").textContent = c.desc;
-  $("caseCost").textContent = fmt(c.cost);
-  
-  $("oddsRow").innerHTML = Object.entries(c.odds).map(x => `<span class="oddsChip">${x[0]}: ${x[1]}%</span>`).join("");
-  $("pityText").textContent = `🎯 Гарантия Legendary+ через ${Math.max(0, 40 - S.pity)} открытий`;
-  $("pityBarFill").style.width = Math.min(100, (S.pity / 40) * 100) + "%";
-  $("caseReelWrap").innerHTML = "";
-};
-
-$("backToCases").onclick = () => {
-  $("caseDetailView").classList.remove("active");
-  $("caseListView").style.display = "block";
-};
-
-$("openCaseBtn").onclick = () => {
-  if (isOpeningCase) return;
-  const c = cases.find(x => x.id === selectedCase);
-  if (S.coins < c.cost) return showToast("Недостаточно монет!");
-  
-  isOpeningCase = true;
-  $("openCaseBtn").disabled = true;
-  S.coins -= c.cost;
-  
-  let rarity = getWeightedRarity(c);
-  if (S.pity >= 39) {
-    const high = Object.keys(c.odds).filter(r => ["Legendary", "Secret"].includes(r));
-    if (high.length) rarity = high[Math.floor(Math.random() * high.length)];
-  }
-  S.pity = ["Legendary", "Secret"].includes(rarity) ? 0 : S.pity + 1;
-  
-  const pool = planes.filter(x => x.rarity === rarity);
-  const prize = pool[Math.floor(Math.random() * pool.length)];
-  
-  runLongReelAnimation(prize, c, () => {
-    const isNew = !S.collected.includes(prize.id);
-    if (isNew) {
-      S.collected.push(prize.id);
-      S.active = prize.id;
-    } else {
-      S.coins += Math.floor(c.cost * 0.3);
-    }
-    S.cases++;
-    
-    showModal(
-      isNew ? "🎉 НОВЫЙ САМОЛЁТ!" : "🔁 ДУБЛИКАТ",
-      `Вам выпал ${prize.name} (${prize.rarity})!`,
-      isNew ? "Самолёт добавлен в вашу коллекцию и выбран основным!" : `Получена компенсация: +${fmt(Math.floor(c.cost * 0.3))} 💰`
-    );
-    
-    if (["Legendary", "Secret"].includes(prize.rarity)) spawnConfetti();
-    isOpeningCase = false;
-    $("openCaseBtn").disabled = false;
-    updateUI();
-    save();
-  });
-};
-
-function getWeightedRarity(c) {
-  const arr = [];
-  for (let [r, w] of Object.entries(c.odds)) for (let i = 0; i < w; i++) arr.push(r);
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function runLongReelAnimation(winItem, c, onComplete) {
-  const reelWrap = $("caseReelWrap");
-  const itemWidth = 90;
-  const winIndex = 45;
-  
-  reelWrap.innerHTML = `<div class="caseReel"><div class="caseReelPointer"></div></div>`;
-  const reel = reelWrap.querySelector(".caseReel");
-  const track = document.createElement("div");
-  track.className = "caseReelTrack";
-  
-  for (let i = 0; i < 52; i++) {
-    const item = (i === winIndex) ? winItem : planes[Math.floor(Math.random() * planes.length)];
-    const d = document.createElement("div");
-    d.className = "caseReelItem";
-    d.innerHTML = `<img src="${item.image}">`;
-    track.appendChild(d);
-  }
-  reel.appendChild(track);
-  
-  const totalDuration = 6500;
-  const targetX = -(winIndex * itemWidth - itemWidth / 2 - reel.clientWidth / 2);
-  let startTime = null;
-  let lastTickItem = -1;
-
-  function animateReel(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
-    const progress = Math.min(elapsed / totalDuration, 1);
-    const easeProgress = 1 - Math.pow(1 - progress, 3.8);
-    
-    const currentX = targetX * easeProgress;
-    track.style.transform = `translate3d(${currentX}px, 0, 0)`;
-    
-    const currentCenterPos = -currentX + (reel.clientWidth / 2);
-    const currentItemIndex = Math.floor(currentCenterPos / itemWidth);
-    
-    if (currentItemIndex !== lastTickItem && currentItemIndex >= 0 && currentItemIndex <= winIndex) {
-      snd.tick();
-      lastTickItem = currentItemIndex;
-    }
-    
-    if (progress < 1) {
-      requestAnimationFrame(animateReel);
-    } else {
-      track.children[winIndex].classList.add("winner");
-      snd.win();
-      setTimeout(onComplete, 400);
-    }
-  }
-  
-  requestAnimationFrame(animateReel);
-}
-
-// COLLECTION & HANGAR
-function renderCollection() {
-  $("collectionGrid").innerHTML = planes.map(p => {
-    const owned = S.collected.includes(p.id);
-    return `
-      <div class="collectCard ${owned ? "" : "locked"} ${S.active === p.id ? "active" : ""}" onclick="selectPlane('${p.id}')">
-        <img src="${p.image}">
-        <div class="collectCardBody">
-          <span class="collectCardName">${owned ? p.name : "Заблокировано"}</span>
-          <span class="collectCardRarity">${owned ? p.rarity : "ОТКРОЙ КЕЙС"}</span>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-window.selectPlane = (id) => {
-  if (!S.collected.includes(id)) return showToast("Сначала откройте этот самолёт в кейсе!");
-  S.active = id;
-  snd.click();
-  showToast("Активный самолёт изменён!");
-  updateUI();
-  save();
-};
-
+   padding: 8px 14px;
+   border: 2px solid #ffffffaa;
+   border-radius: 13px;
+   background: linear-gradient(135deg, var(--gold), var(--orange));
+   color: #211303;
+   font-weight: 900;
+17:18
+font-size: 12px;
+   cursor: pointer;
+   box-shadow: 0
+17:18
 // MINI-GAMES DEFINITIONS (MAX 10 PER GAME DAILY)
-const gameDefs = [
-  ["FLIGHT DODGER", "✈️ Пролёт сквозь грозу", "Маневрируй между молниями и облаками."],
-  ["RUNWAY RUSH", "🏁 Идеальная посадка", "Попадай в квадрат зоны посадки. 3 промаха — проигрыш."],
-  ["AIR RAID", "🎯 Перехватчик", "20 секунд: попади по мишеням. Попадание +5, промах −5."],
-  ["SKY MEMORY", "🧠 Диспетчер", "25 раундов. Каждый раунд последовательность становится длиннее на 1." ]
-];
-
-function renderGames() {
-  checkDailyReset();
-  $("gameGrid").innerHTML = gameDefs.map((g, i) => {
-    const used = S.gameAttempts.counts[i] || 0;
-    const left = Math.max(0, 10 - used);
-    return `
-      <div class="gameCard" onclick="openMiniGame(${i})">
-        <b>${g[0]}</b>
-        <p>${g[1]} — ${g[2]}</p>
-        <div class="gameMeta">
-          <span class="gameAttempts">Попыток: ${left}/10</span>
-          <span class="gameReward">Бонус до +${[900,1200,1600,1400][i].toLocaleString('ru-RU')} 💰</span>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-let currentGame = -1, gameRunning = false, gameScore = 0, animFrame = 0;
-let g0_planeY = 140, g0_vel = 0, g0_obstacles = [], g0_distance = 0;
-let g1_planePos = 0, g1_dir = 1.5, g1_targetX = 0, g1_targetY = 0, g1_targetSize = 150, g1_round = 0, g1_misses = 0;
-let g2_targets = [], g2_timeLeft = 20, g2_lastTime = 0, g2_hits = 0, g2_misses = 0;
-let g3_seq = [], g3_userSeq = [], g3_phase = "init", g3_round = 0, g3_showIndex = 0, g3_flashIndex = -1, g3_timer = null;
-
-function clearMemoryTimer() {
-  if (g3_timer) {
-    clearTimeout(g3_timer);
-    g3_timer = null;
-  }
-}
-
-window.openMiniGame = (idx) => {
-  if (gameRunning) endMiniGame(true);
-  checkDailyReset();
-  const used = S.gameAttempts.counts[idx] || 0;
-  if (used >= 10) return showToast("Лимит 10 попыток в день для этой игры исчерпан!");
-  currentGame = idx;
-  $("gameCanvasWrap").classList.add("show");
-  $("gameTitle").textContent = gameDefs[idx][0];
-  $("gameStartBtn").textContent = "СТАРТ ИГРЫ (Осталось " + (10 - used) + " поп.)";
-  initCanvasPreview(idx);
-};
-
-function initCanvasPreview(idx) {
-  const canvas = $("canvas"), ctx = canvas.getContext("2d");
-  clearMemoryTimer();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, "#0d182b");
-  grad.addColorStop(1, "#050914");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 20px system-ui";
-  ctx.textAlign = "center";
-  ctx.fillText("Нажмите 'СТАРТ ИГРЫ' для начала", canvas.width / 2, canvas.height / 2);
-};
-
-$("gameStartBtn").onclick = () => {
-  if (currentGame < 0) return;
-  checkDailyReset();
-  const used = S.gameAttempts.counts[currentGame] || 0;
-  if (used >= 10) return showToast("Лимит попыток исчерпан!");
-  if (gameRunning) return;
-
-  S.gameAttempts.counts[currentGame] = used + 1;
-  save();
-  updateUI();
-
-  clearMemoryTimer();
-  refreshMiniGamePlaneImage();
-  gameRunning = true;
-  gameScore = 0;
-  $("gameStartBtn").textContent = "ИГРА ИДЁТ...";
-
-  if (currentGame === 0) {
-    g0_planeY = 210; g0_vel = 0; g0_obstacles = []; g0_distance = 0;
-  } else if (currentGame === 1) {
-    g1_planePos = 0; g1_dir = 1.5; g1_round = 0; g1_misses = 0; createRunwayTarget();
-  } else if (currentGame === 2) {
-    g2_targets = []; g2_timeLeft = 20; g2_lastTime = performance.now(); g2_hits = 0; g2_misses = 0;
-  } else if (currentGame === 3) {
-    g3_seq = []; g3_userSeq = []; g3_round = 0; g3_phase = "show"; g3_showIndex = 0; g3_flashIndex = -1;
-    nextMemoryRound();
-  }
-  runGameLoop();
-};
-
-$("canvas").onpointerdown = (e) => {
-  if (!gameRunning) return;
-  const canvas = $("canvas");
-  const rect = canvas.getBoundingClientRect();
-  const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
-  const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-  if (currentGame === 0) {
-    g0_vel = -6.5;
-    snd.tick();
-  } else if (currentGame === 1) {
-    const centerX = canvas.width / 2 + g1_planePos;
-    const planeY = 220;
-    const hit = clickX >= centerX - g1_targetSize / 2 && clickX <= centerX + g1_targetSize / 2 &&
-                clickY >= planeY - g1_targetSize / 2 && clickY <= planeY + g1_targetSize / 2;
-    // For this game the player clicks where the moving landing zone is.
-    const targetHit = clickX >= g1_targetX - g1_targetSize / 2 && clickX <= g1_targetX + g1_targetSize / 2 &&
-                      clickY >= g1_targetY - g1_targetSize / 2 && clickY <= g1_targetY + g1_targetSize / 2;
-    if (targetHit && Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) < g1_targetSize * 0.75) {
-      const accuracy = Math.max(0, 1 - Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) / (g1_targetSize * 0.75));
-      const points = Math.round(70 + accuracy * 130);
-      gameScore += points;
-      g1_round++;
-      snd.crit();
-      if (g1_round >= 8) {
-        endMiniGame(false, "success");
-      } else {
-        createRunwayTarget();
-      }
-    } else {
-      g1_misses++;
-      gameScore = Math.max(0, gameScore - 40);
-      snd.click();
-      createRunwayTarget();
-      if (g1_misses >= 3) endMiniGame(false, "loss");
-    }
-  } else if (currentGame === 2) {
-    let hit = false;
-    for (let i = g2_targets.length - 1; i >= 0; i--) {
-      const t = g2_targets[i];
-      if (Math.hypot(clickX - t.x, clickY - t.y) <= t.r) {
-        g2_targets.splice(i, 1);
-        gameScore += 5;
-        g2_hits++;
-        hit = true;
-        snd.crit();
-        break;
-      }
-    }
-    if (!hit) {
-      gameScore -= 5;
-      g2_misses++;
-      snd.click();
-      showToast("Промах −5");
-    }
-  } else if (currentGame === 3 && g3_phase === "input") {
-    const buttons = getMemoryButtons(canvas);
-    for (let i = 0; i < buttons.length; i++) {
-      const b = buttons[i];
-      if (clickX >= b.x && clickX <= b.x + b.w && clickY >= b.y && clickY <= b.y + b.h) {
-        memoryPress(i);
-        break;
-      }
-    }
-  }
-};
-
-function createRunwayTarget() {
-  const canvas = $("canvas");
-  const margin = 100;
-  // True square: medium size, never tiny and never huge.
-  g1_targetSize = 110 + Math.random() * 80;
-  g1_targetX = margin + Math.random() * (canvas.width - margin * 2);
-  g1_targetY = 120 + Math.random() * 200;
-  // Keep the moving plane near the target area, but not exactly on it.
-  g1_planePos = Math.max(-300, Math.min(300, g1_targetX - canvas.width / 2 + (Math.random() - .5) * 240));
-  g1_dir = (Math.random() < .5 ? -1 : 1) * (1.2 + Math.random() * 1.8);
-}
-
-function nextMemoryRound() {
-  if (!gameRunning || currentGame !== 3) return;
-  g3_round++;
-  if (g3_round > 25) {
-    gameScore += 10000;
-    endMiniGame(false, "memoryWin");
-    return;
-  }
-  g3_seq.push(Math.floor(Math.random() * 4));
-  g3_userSeq = [];
-  g3_phase = "show";
-  g3_showIndex = 0;
-  g3_flashIndex = -1;
-  showMemorySequence();
-}
-
-function showMemorySequence() {
-  clearMemoryTimer();
-  if (!gameRunning || currentGame !== 3) return;
-  if (g3_showIndex >= g3_seq.length) {
-    g3_flashIndex = -1;
-    g3_phase = "input";
-    g3_userSeq = [];
-    return;
-  }
-  g3_flashIndex = g3_seq[g3_showIndex];
-  g3_timer = setTimeout(() => {
-    g3_flashIndex = -1;
-    g3_showIndex++;
-    g3_timer = setTimeout(showMemorySequence, 300);
-  }, 550);
-}
-
-function getMemoryButtons(canvas) {
-  const size = 125;
-  const gap = 22;
-  const total = size * 2 + gap;
-  const sx = canvas.width / 2 - total / 2;
-  const sy = canvas.height / 2 - total / 2;
-  return [
-    {x:sx, y:sy, w:size, h:size},
-    {x:sx+size+gap, y:sy, w:size, h:size},
-    {x:sx, y:sy+size+gap, w:size, h:size},
-    {x:sx+size+gap, y:sy+size+gap, w:size, h:size}
+  const gameDefs = [
+    ["FLIGHT DODGER", "✈️  Пролёт сквозь грозу", "Маневрируй между молниями и облаками."],
+    ["RUNWAY RUSH", "🏁  Идеальная посадка", "Попадай в квадрат зоны посадки. 3 промаха — проигрыш."],
+    ["AIR RAID", "🎯  Перехватчик", "20 секунд: попади по мишеням. Попадание +5, промах −5."],
+    ["SKY MEMORY", "🧠  Диспетчер", "25 раундов. Каждый раунд последовательность становится длиннее на 1." ]
   ];
-}
 
-function memoryPress(idx) {
-  if (g3_phase !== "input" || !gameRunning) return;
-  g3_userSeq.push(idx);
-  snd.tick();
-  if (idx !== g3_seq[g3_userSeq.length - 1]) {
-    gameScore = Math.max(0, gameScore - 75);
-    endMiniGame(false, "memoryLoss");
-    return;
-  }
-  if (g3_userSeq.length === g3_seq.length) {
-    gameScore += 100 + g3_seq.length * 80;
-    g3_phase = "between";
-    clearMemoryTimer();
-    g3_timer = setTimeout(nextMemoryRound, 450);
-  }
-}
-
-let gPlaneImg = null;
-let gPlaneImgSrc = "";
-function refreshMiniGamePlaneImage() {
-  const p = getActivePlane();
-  if (gPlaneImgSrc === p.image && gPlaneImg) return;
-  gPlaneImgSrc = p.image;
-  gPlaneImg = new Image();
-  gPlaneImg.crossOrigin = "anonymous";
-  gPlaneImg.src = p.image;
-}
-function drawPlane(ctx, x, y, scale = 1) {
-  ctx.save(); ctx.translate(x,y); ctx.scale(scale,scale);
-  if (gPlaneImg && gPlaneImg.complete && gPlaneImg.naturalWidth > 0) {
-    const w=96,h=60; ctx.shadowColor="#55d9ff"; ctx.shadowBlur=18;
-    ctx.beginPath(); ctx.roundRect(-w/2,-h/2,w,h,16); ctx.clip(); ctx.drawImage(gPlaneImg,-w/2,-h/2,w,h); ctx.restore(); return;
-  }
-  ctx.shadowColor="#55d9ff"; ctx.shadowBlur=18; ctx.font="58px system-ui, Apple Color Emoji, Segoe UI Emoji, sans-serif";
-  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("✈️",0,0); ctx.restore();
-}
-
-function runGameLoop(now = performance.now()) {
-  if (!gameRunning) return;
-  const canvas = $("canvas"), ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, "#081021");
-  grad.addColorStop(1, "#04070f");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  if (currentGame === 0) {
-    g0_vel += 0.32;
-    g0_planeY += g0_vel;
-    g0_distance += 0.016;
-    if (!g0_obstacles.length || g0_obstacles[g0_obstacles.length - 1].x < canvas.width - 250) {
-      g0_obstacles.push({ x: canvas.width, top: 45 + Math.random() * 155, gap: 145 + Math.random() * 25, passed:false });
-    }
-    g0_obstacles.forEach(o => o.x -= 4.4);
-    g0_obstacles = g0_obstacles.filter(o => o.x > -90);
-    g0_obstacles.forEach(o => {
-      const lightning = ctx.createLinearGradient(o.x,0,o.x+60,0);
-      lightning.addColorStop(0,"#3979ff"); lightning.addColorStop(.5,"#55d9ff"); lightning.addColorStop(1,"#3979ff");
-      ctx.fillStyle = lightning;
-      ctx.fillRect(o.x, 0, 60, o.top);
-      ctx.fillRect(o.x, o.top + o.gap, 60, canvas.height - o.top - o.gap);
-      if (!o.passed && o.x < 120) { o.passed = true; gameScore += 35; }
-    });
-    drawPlane(ctx, 120, g0_planeY, 1.15);
-    if (g0_planeY < 15 || g0_planeY > canvas.height - 15 || g0_obstacles.some(o => o.x < 145 && o.x + 60 > 95 && (g0_planeY - 15 < o.top || g0_planeY + 15 > o.top + o.gap))) {
-      endMiniGame(false, "crash"); return;
-    }
-    ctx.fillStyle="#ffffffcc"; ctx.font="bold 18px system-ui"; ctx.textAlign="left"; ctx.fillText("ПРОЛЁТ: " + g0_distance.toFixed(1) + " км", 18, 30);
-
-  } else if (currentGame === 1) {
-    g1_planePos += g1_dir;
-    if (Math.abs(g1_planePos) > 330) g1_dir *= -1;
-    const cx = canvas.width / 2 + g1_planePos;
-    // runway
-    ctx.fillStyle="#ffffff12"; ctx.fillRect(canvas.width/2-380, 45, 760, 330);
-    ctx.strokeStyle="#ffffff18"; ctx.lineWidth=3; ctx.strokeRect(canvas.width/2-380,45,760,330);
-    for(let y=70;y<350;y+=55){ ctx.fillStyle="#ffffff22"; ctx.fillRect(canvas.width/2-4,y,8,28); }
-    // target square
-    ctx.save();
-    ctx.translate(g1_targetX, g1_targetY);
-    ctx.fillStyle="#52e0a140"; ctx.strokeStyle="#52e0a1"; ctx.lineWidth=5;
-    ctx.shadowColor="#52e0a1"; ctx.shadowBlur=22;
-    ctx.fillRect(-g1_targetSize/2,-g1_targetSize/2,g1_targetSize,g1_targetSize);
-    ctx.strokeRect(-g1_targetSize/2,-g1_targetSize/2,g1_targetSize,g1_targetSize);
-    ctx.restore();
-    drawPlane(ctx,cx,220,1.05);
-    ctx.fillStyle="#fff"; ctx.font="bold 17px system-ui"; ctx.textAlign="left";
-    ctx.fillText("ПОПАДАНИЙ: "+g1_round+"/8",18,28);
-    ctx.fillStyle="#ff5876"; ctx.textAlign="right"; ctx.fillText("ПРОМАХОВ: "+g1_misses+"/3",canvas.width-18,28);
-    ctx.textAlign="center"; ctx.fillStyle="#ffffffaa"; ctx.font="bold 15px system-ui";
-    ctx.fillText("КЛИКАЙ ПО ЗЕЛЁНОМУ КВАДРАТУ",canvas.width/2,405);
-
-  } else if (currentGame === 2) {
-    const dt = Math.min(0.1, (now - g2_lastTime) / 1000); g2_lastTime = now;
-    g2_timeLeft -= dt;
-    if (g2_timeLeft <= 0) { g2_timeLeft=0; endMiniGame(false,"time"); return; }
-    if (Math.random() < 0.055 && g2_targets.length < 7) {
-      const r = 24 + Math.random()*14;
-      g2_targets.push({x:70+r+Math.random()*(canvas.width-140-2*r),y:65+r+Math.random()*(canvas.height-135-2*r),r,life:2.1+Math.random()*1.5,age:0,phase:Math.random()*Math.PI*2});
-    }
-    g2_targets.forEach(t => { t.age += dt; t.x += Math.sin(t.age*3+t.phase)*.7; t.y += Math.cos(t.age*2.5+t.phase)*.5; });
-    const expired = g2_targets.filter(t=>t.age>=t.life).length;
-    if (expired) g2_targets = g2_targets.filter(t=>t.age<t.life);
-    g2_targets.forEach(t => {
-      const pulse=1+Math.sin(t.age*7)*.08;
-      ctx.beginPath(); ctx.arc(t.x,t.y,t.r*pulse,0,Math.PI*2); ctx.fillStyle="#ff5876"; ctx.fill();
-      ctx.beginPath(); ctx.arc(t.x,t.y,t.r*.48,0,Math.PI*2); ctx.fillStyle="#ffd15a"; ctx.fill();
-      ctx.strokeStyle="#fff"; ctx.lineWidth=3; ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(t.x-t.r-10,t.y); ctx.lineTo(t.x+t.r+10,t.y); ctx.moveTo(t.x,t.y-t.r-10); ctx.lineTo(t.x,t.y+t.r+10); ctx.strokeStyle="#ffffff60"; ctx.stroke();
-    });
-    ctx.fillStyle="#fff"; ctx.font="bold 24px system-ui"; ctx.textAlign="left"; ctx.fillText("ВРЕМЯ: "+g2_timeLeft.toFixed(1)+"с",18,32);
-    ctx.textAlign="right"; ctx.fillText("ПОПАДАНИЙ: "+g2_hits,canvas.width-18,32);
-    ctx.textAlign="center"; ctx.font="bold 16px system-ui"; ctx.fillStyle="#ffffffaa"; ctx.fillText("ПОПАДАНИЕ +5  •  ПРОМАХ −5",canvas.width/2,405);
-
-  } else if (currentGame === 3) {
-    const buttons = getMemoryButtons(canvas);
-    const colors=["#55d9ff","#a979ff","#52e0a1","#ffd15a"];
-    buttons.forEach((b,idx)=>{
-      const active = g3_flashIndex === idx;
-      ctx.save();
-      ctx.fillStyle=colors[idx]; ctx.globalAlpha=active?1:.28;
-      ctx.shadowColor=colors[idx]; ctx.shadowBlur=active?35:0;
-      ctx.fillRect(b.x,b.y,b.w,b.h);
-      ctx.strokeStyle="#ffffff80"; ctx.lineWidth=3; ctx.strokeRect(b.x,b.y,b.w,b.h);
-      ctx.restore();
-    });
-    ctx.fillStyle="#fff"; ctx.font="bold 22px system-ui"; ctx.textAlign="left";
-    ctx.fillText("РАУНД: "+Math.min(g3_round,25)+"/25",18,32);
-    ctx.textAlign="right"; ctx.fillText("СЧЁТ: "+gameScore,canvas.width-18,32);
-    ctx.textAlign="center"; ctx.font="bold 16px system-ui";
-    ctx.fillStyle=g3_phase==="input"?"#52e0a1":"#ffffffaa";
-    ctx.fillText(g3_phase==="input"?"ТЕПЕРЬ ПОВТОРИ ПОСЛЕДОВАТЕЛЬНОСТЬ":"ЗАПОМИНАЙ ПОСЛЕДОВАТЕЛЬНОСТЬ",canvas.width/2,405);
-  }
-
-  $("gameScore").textContent = currentGame === 2 ? "Счёт: " + gameScore + " • " + g2_timeLeft.toFixed(1) + "с" : "Счёт: " + gameScore;
-  animFrame = requestAnimationFrame(runGameLoop);
-}
-
-function endMiniGame(silent = false, reason = "normal") {
-  if (!gameRunning && !silent) return;
-  gameRunning = false;
-  cancelAnimationFrame(animFrame);
-  clearMemoryTimer();
-  g3_flashIndex = -1;
-
-  if (silent) return;
-
-  let reward = 0;
-  if (currentGame === 0) {
-    reward = 900 + gameScore * 18 + Math.floor(g0_distance * 120);
-  } else if (currentGame === 1) {
-    reward = Math.max(500, 1200 + gameScore * 22 + g1_round * 180 - g1_misses * 80);
-  } else if (currentGame === 2) {
-    reward = Math.max(0, 1600 + gameScore * 35 + g2_hits * 120 - g2_misses * 35);
-  } else if (currentGame === 3) {
-    reward = 1400 + gameScore * 24 + g3_seq.length * 250;
-  }
-
-  S.coins += reward;
-  S.total += reward;
-  snd.win();
-  const title = reason === "loss" || reason === "memoryLoss" ? "💥 ИГРА ОКОНЧЕНА" : "🏆 ИГРА ЗАВЕРШЕНА";
-  const extra = currentGame === 1 ? ` Посадок: ${g1_round}/8, промахов: ${g1_misses}/3.` : currentGame === 3 ? ` Раунд: ${Math.min(g3_round,25)}/25.` : "";
-  showToast(`${title}! Награда: +${fmt(reward)} 💰!${extra}`);
-  $("gameStartBtn").textContent = "СТАРТ ИГРЫ";
-  updateUI();
-  save();
-}
-
-// ACHIEVEMENTS
-const achDefs = [
-  ["first", "Первый взлёт", "Сделайте ваш первый клик", s => s.clicks >= 1, 100],
-  ["click100", "Опытный пилот", "Совершите 100 кликов", s => s.clicks >= 100, 500],
-  ["cases5", "Охотник за кейсами", "Откройте 5 кейсов", s => s.cases >= 5, 1200],
-  ["fleet5", "Эскадрилья", "Соберите 5 самолётов", s => s.collected.length >= 5, 2500]
-];
-
-function renderAchievements() {
-  $("achievementsList").innerHTML = achDefs.map(a => {
-    const done = S.ach.includes(a[0]), ok = a[4] ? a[3](S) : false;
-    if (ok && !done) { S.ach.push(a[0]); S.coins += a[4]; spawnConfetti(); }
-    return `
-      <div style="display:flex; gap:12px; align-items:center; padding:12px; border-bottom:1px solid #ffffff10; opacity:${done || ok ? 1 : 0.45}">
-        <div style="font-size:24px">${done || ok ? "🏆" : "🔒"}</div>
-        <div>
-          <b style="font-size:13px">${a[1]}</b>
-          <div style="font-size:10px; opacity:.65">${a[2]} • +${fmt(a[4])} 💰</div>
+  function renderGames() {
+    checkDailyReset();
+    $("gameGrid").innerHTML = gameDefs.map((g, i) => {
+      const used = S.gameAttempts.counts[i] || 0;
+      const left = Math.max(0, 10 - used);
+      return `
+        <div class="gameCard" onclick="openMiniGame(${i})">
+          <b>${g[0]}</b>
+          <p>${g[1]} — ${g[2]}</p>
+          <div class="gameMeta">
+            <span class="gameAttempts">Попыток: ${left}/10</span>
+            <span class="gameReward">Бонус до +${[900,1200,1600,1400][i].toLocaleString('ru-RU')} 💰</span>
+          </div>
         </div>
-      </div>
-    `;
-  }).join("");
-}
-
-// WHEEL MODAL SYSTEM: 1 бесплатный спин раз в 24 часа + разблокировка за 10.000
-const wheelRewards=[5000,10000,10000,15200,25000,50000,75000,100000];
-const WHEEL_COOLDOWN=24*60*60*1000;
-let currentWheelAngle=0;
-function wheelCooldownLeft(){return Math.max(0,WHEEL_COOLDOWN-(Date.now()-(S.wheelLastSpinAt||0)));}
-function formatCountdown(ms){const t=Math.ceil(ms/1000),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;}
-function renderWheelLabels(){const wrap=$("wheelLabels");if(!wrap)return;wrap.style.transform="rotate(0deg)";const n=wheelRewards.length,r=88;wrap.innerHTML=wheelRewards.map((v,i)=>{const a=i*(360/n)+180/n;return `<div class="wheelLabel" style="transform:rotate(${a}deg) translateY(-${r}px) rotate(-${a}deg)"><span>${fmt(v)}</span></div>`;}).join("");}
-function updateWheelUI(){const left=wheelCooldownLeft(),btn=$("spinWheelBtn"),hint=$("wheelHint"),sub=$("wheelWidgetSub");if(!btn||!hint||!sub)return;if(left<=0){btn.disabled=false;btn.textContent="🎁 БЕСПЛАТНЫЙ СПИН";hint.textContent="Бесплатная прокрутка доступна прямо сейчас.";sub.textContent="Бесплатный спин доступен!";}else{btn.disabled=false;btn.textContent="🔓 РАЗБЛОКИРОВАТЬ ЗА 10.000 💰";hint.textContent=`Бесплатный спин снова через ${formatCountdown(left)}. Сейчас можно разблокировать за 10.000 💰.`;sub.textContent=`Следующий бесплатный спин через ${formatCountdown(left)}`;}}
-$("openWheelWidget").onclick=()=>{renderWheelLabels();updateWheelUI();$("wheelModal").classList.add("show");};
-$("closeWheelModal").onclick=()=>{$("wheelModal").classList.remove("show");};
-setInterval(updateWheelUI,1000);
-$("spinWheelBtn").onclick=()=>{const left=wheelCooldownLeft(),isFree=left<=0;if(!isFree){if(S.coins<10000)return showToast("Нужно 10.000 💰 для разблокировки колеса!");S.coins-=10000;}const idx=Math.floor(Math.random()*wheelRewards.length),sa=360/wheelRewards.length;const desired=270-(idx*sa+sa/2),norm=((currentWheelAngle%360)+360)%360,delta=((desired-norm)+360)%360,target=currentWheelAngle+2880+delta,dur=7000;$("spinWheelBtn").disabled=true;let st=null;function animateWheel(ts){if(!st)st=ts;const p=Math.min((ts-st)/dur,1),ease=1-Math.pow(1-p,4),angle=currentWheelAngle+(target-currentWheelAngle)*ease;$("wheelDisk").style.transform=`rotate(${angle}deg)`;if ($('"wheelLabels"')) $('"wheelLabels"').style.transform=`rotate(${angle}deg)`;if(p<1){requestAnimationFrame(animateWheel);return;}currentWheelAngle=angle%360;const win=wheelRewards[idx];S.coins+=win;S.total+=win;S.wheelLastSpinAt=Date.now();snd.win();spawnConfetti();showToast(`🎉 Вы выиграли +${fmt(win)} 💰!${isFree?" Бесплатный спин использован.":" Разблокировка оплачена: 10.000 💰."}`);$("spinWheelBtn").disabled=false;$("wheelModal").classList.remove("show");updateWheelUI();updateUI();save();}updateUI();save();requestAnimationFrame(animateWheel);};
-renderWheelLabels();updateWheelUI();
-
-// UI UTILITIES
-function showModal(title, sub, text) {
-  $("modalTitle").textContent = title;
-  $("modalText").textContent = sub + "\n" + text;
-  $("modal").classList.add("show");
-}
-$("modalBtn").onclick = () => $("modal").classList.remove("show");
-
-function showToast(txt) {
-  $("toast").textContent = txt;
-  $("toast").classList.add("show");
-  clearTimeout(window._t);
-  window._t = setTimeout(() => $("toast").classList.remove("show"), 2000);
-}
-
-function spawnConfetti() {
-  for (let i = 0; i < 40; i++) {
-    const el = document.createElement("div");
-    el.className = "confetti";
-    el.style.left = Math.random() * 100 + "vw";
-    el.style.animationDuration = (2 + Math.random() * 1.5) + "s";
-    el.style.background = ["#ffd15a", "#55d9ff", "#a979ff", "#52e0a1", "#ff5876"][Math.floor(Math.random() * 5)];
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3500);
+      `;
+    }).join("");
   }
-}
 
-// INITIAL START
-updateUI();
-</script>
-</body>
-</html>
+  let currentGame = -1, gameRunning = false, gameScore = 0, animFrame = 0;
+  let g0_planeY = 140, g0_vel = 0, g0_obstacles = [], g0_distance = 0;
+  let g1_planePos = 0, g1_dir = 1.5, g1_targetX = 0, g1_targetY = 0, g1_targetSize = 150, g1_round = 0, g1_misses = 0;
+  let g2_targets = [], g2_timeLeft = 20, g2_lastTime = 0, g2_hits = 0, g2_misses = 0;
+  let g3_seq = [], g3_userSeq = [], g3_phase = "init", g3_round = 0, g3_showIndex = 0, g3_flashIndex = -1, g3_timer = null;
+
+  function clearMemoryTimer() {
+    if (g3_timer) {
+      clearTimeout(g3_timer);
+      g3_timer = null;
+    }
+  }
+
+  window.openMiniGame = (idx) => {
+    if (gameRunning) endMiniGame(true);
+    checkDailyReset();
+    const used = S.gameAttempts.counts[idx] || 0;
+    if (used >= 10) return showToast("Лимит 10 попыток в день для этой игры исчерпан!");
+    currentGame = idx;
+    $("gameCanvasWrap").classList.add("show");
+    $("gameTitle").textContent = gameDefs[idx][0];
+    $("gameStartBtn").textContent = "СТАРТ ИГРЫ (Осталось " + (10 - used) + " поп.)";
+    initCanvasPreview(idx);
+  };
+
+  function initCanvasPreview(idx) {
+    const canvas = $("canvas"), ctx = canvas.getContext("2d");
+    clearMemoryTimer();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, "#0d182b");
+    grad.addColorStop(1, "#050914");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 20px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText("Нажмите 'СТАРТ ИГРЫ' для начала", canvas.width / 2, canvas.height / 2);
+  };
+
+  $("gameStartBtn").onclick = () => {
+    if (currentGame < 0) return;
+    checkDailyReset();
+    const used = S.gameAttempts.counts[currentGame] || 0;
+    if (used >= 10) return showToast("Лимит попыток исчерпан!");
+    if (gameRunning) return;
+
+    S.gameAttempts.counts[currentGame] = used + 1;
+    save();
+    updateUI();
+
+    clearMemoryTimer();
+    refreshMiniGamePlaneImage();
+    gameRunning = true;
+    gameScore = 0;
+    $("gameStartBtn").textContent = "ИГРА ИДЁТ...";
+
+    if (currentGame === 0) {
+      g0_planeY = 210; g0_vel = 0; g0_obstacles = []; g0_distance = 0;
+    } else if (currentGame === 1) {
+      g1_planePos = 0; g1_dir = 1.5; g1_round = 0; g1_misses = 0; createRunwayTarget();
+    } else if (currentGame === 2) {
+      g2_targets = []; g2_timeLeft = 20; g2_lastTime = performance.now(); g2_hits = 0; g2_misses = 0;
+    } else if (currentGame === 3) {
+      g3_seq = []; g3_userSeq = []; g3_round = 0; g3_phase = "show"; g3_showIndex = 0; g3_flashIndex = -1;
+      nextMemoryRound();
+    }
+    runGameLoop();
+  };
+
+  $("canvas").onpointerdown = (e) => {
+    if (!gameRunning) return;
+    const canvas = $("canvas");
+    const rect = canvas.getBoundingClientRect();
+17:20
+const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+    if (currentGame === 0) {
+      g0_vel = -6.5;
+      snd.tick();
+    } else if (currentGame === 1) {
+      const centerX = canvas.width / 2 + g1_planePos;
+      const planeY = 220;
+      const hit = clickX >= centerX - g1_targetSize / 2 && clickX <= centerX + g1_targetSize / 2 &&
+                  clickY >= planeY - g1_targetSize / 2 && clickY <= planeY + g1_targetSize / 2;
+
+      const targetHit = clickX >= g1_targetX - g1_targetSize / 2 && clickX <= g1_targetX + g1_targetSize / 2 &&
+                        clickY >= g1_targetY - g1_targetSize / 2 && clickY <= g1_targetY + g1_targetSize / 2;
+
+      if (targetHit && Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) < g1_targetSize * 0.75) {
+        const accuracy = Math.max(0, 1 - Math.abs(g1_planePos - (g1_targetX - canvas.width / 2)) / (g1_targetSize * 0.75));
+        const points = Math.round(70 + accuracy * 130);
+        gameScore += points;
+        g1_round++;
+        snd.crit();
+
+        if (g1_round >= 8) {
+          endMiniGame(false, "success");
+        } else {
+          createRunwayTarget();
+        }
+      } else {
+        g1_misses++;
+        gameScore = Math.max(0, gameScore - 40);
+        snd.click();
+        createRunwayTarget();
+        if (g1_misses >= 3) endMiniGame(false, "loss");
+      }
+
+    } else if (currentGame === 2) {
+      let hit = false;
+
+      for (let i = g2_targets.length - 1; i >= 0; i--) {
+        const t = g2_targets[i];
+
+        if (Math.hypot(clickX - t.x, clickY - t.y) <= t.r) {
+          g2_targets.splice(i, 1);
+          gameScore += 5;
+          g2_hits++;
+          hit = true;
+          snd.crit();
+          break;
+        }
+      }
+
+      if (!hit) {
+        gameScore -= 5;
+        g2_misses++;
+        snd.click();
+        showToast("Промах −5");
+      }
+
+    } else if (currentGame === 3 && g3_phase === "input") {
+      const buttons = getMemoryButtons(canvas);
+
+      for (let i = 0; i < buttons.length; i++) {
+        const b = buttons[i];
+
+        if (clickX >= b.x && clickX <= b.x + b.w && clickY >= b.y && clickY <= b.y + b.h) {
+          memoryPress(i);
+          break;
+        }
+      }
+    }
+  };
+
+  function createRunwayTarget() {
+    const canvas = $("canvas");
+    const margin = 100;
+
+    g1_targetSize = 110 + Math.random() * 80;
+    g1_targetX = margin + Math.random() * (canvas.width - margin * 2);
+    g1_targetY = 120 + Math.random() * 200;
+
+    g1_planePos = Math.max(
+      -300,
+      Math.min(
+        300,
+        g1_targetX - canvas.width / 2 + (Math.random() - .5) * 240
+      )
+    );
+
+    g1_dir = (Math.random() < .5 ? -1 : 1) * (1.2 + Math.random() * 1.8);
+  }
+
+  function nextMemoryRound() {
+    if (!gameRunning || currentGame !== 3) return;
+
+    g3_round++;
+
+    if (g3_round > 25) {
+      gameScore += 10000;
+      endMiniGame(false, "memoryWin");
+      return;
+    }
+
+    g3_seq.push(Math.floor(Math.random() * 4));
+    g3_userSeq = [];
+    g3_phase = "show";
+    g3_showIndex = 0;
+    g3_flashIndex = -1;
+
+    showMemorySequence();
+  }
+
+  function showMemorySequence() {
+    clearMemoryTimer();
+
+    if (!gameRunning || currentGame !== 3) return;
+
+    if (g3_showIndex >= g3_seq.length) {
+      g3_flashIndex = -1;
+      g3_phase = "input";
+      g3_userSeq = [];
+      return;
+    }
+
+    g3_flashIndex = g3_seq[g3_showIndex];
+
+    g3_timer = setTimeout(() => {
+      g3_flashIndex = -1;
+      g3_showIndex++;
+
+      g3_timer = setTimeout(showMemorySequence, 300);
+    }, 550);
+  }
+
+  function getMemoryButtons(canvas) {
+    const size = 125;
+    const gap = 22;
+    const total = size * 2 + gap;
+    const sx = canvas.width / 2 - total / 2;
+    const sy = canvas.height / 2 - total / 2;
+
+    return [
+      {x:sx, y:sy, w:size, h:size},
+      {x:sx+size+gap, y:sy, w:size, h:size},
+      {x:sx, y:sy+size+gap, w:size, h:size},
+      {x:sx+size+gap, y:sy+size+gap, w:size, h:size}
+17:20
+];
+  }
+
+  function memoryPress(idx) {
+    if (g3_phase !== "input" || !gameRunning) return;
+
+    g3_userSeq.push(idx);
+    snd.tick();
+
+    if (idx !== g3_seq[g3_userSeq.length - 1]) {
+      gameScore = Math.max(0, gameScore - 75);
+      endMiniGame(false, "memoryLoss");
+      return;
+    }
+
+    if (g3_userSeq.length === g3_seq.length) {
+      gameScore += 100 + g3_seq.length * 80;
+      g3_phase = "between";
+      clearMemoryTimer();
+      g3_timer = setTimeout(nextMemoryRound, 450);
+    }
+  }
+
+  let gPlaneImg = null;
+  let gPlaneImgSrc = "";
+
+  function refreshMiniGamePlaneImage() {
+    const p = getActivePlane();
+
+    if (gPlaneImgSrc === p.image && gPlaneImg) return;
+
+    gPlaneImgSrc = p.image;
+    gPlaneImg = new Image();
+    gPlaneImg.crossOrigin = "anonymous";
+    gPlaneImg.src = p.image;
+  }
+
+  function drawPlane(ctx, x, y, scale = 1) {
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(scale,scale);
+
+    if (gPlaneImg && gPlaneImg.complete && gPlaneImg.naturalWidth > 0) {
+      const w=96,h=60;
+
+      ctx.shadowColor="#55d9ff";
+      ctx.shadowBlur=18;
+
+      ctx.beginPath();
+      ctx.roundRect(-w/2,-h/2,w,h,16);
+      ctx.clip();
+
+      ctx.drawImage(gPlaneImg,-w/2,-h/2,w,h);
+      ctx.restore();
+      return;
+    }
+
+    ctx.shadowColor="#55d9ff";
+    ctx.shadowBlur=18;
+    ctx.font="58px system-ui, Apple Color Emoji, Segoe UI Emoji, sans-serif";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.fillText("✈️ ",0,0);
+    ctx.restore();
+  }
+
+  function runGameLoop(now = performance.now()) {
+    if (!gameRunning) return;
+
+    const canvas = $("canvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, "#081021");
+    grad.addColorStop(1, "#04070f");
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (currentGame === 0) {
+
+      g0_vel += 0.32;
+      g0_planeY += g0_vel;
+      g0_distance += 0.016;
+
+      if (
+        !g0_obstacles.length ||
+        g0_obstacles[g0_obstacles.length - 1].x < canvas.width - 250
+      ) {
+        g0_obstacles.push({
+          x: canvas.width,
+          top: 45 + Math.random() * 155,
+          gap: 145 + Math.random() * 25,
+          passed:false
+        });
+      }
+
+      g0_obstacles.forEach(o => o.x -= 4.4);
+      g0_obstacles = g0_obstacles.filter(o => o.x > -90);
+
+      g0_obstacles.forEach(o => {
+        const lightning = ctx.createLinearGradient(o.x,0,o.x+60,0);
+
+        lightning.addColorStop(0,"#3979ff");
+        lightning.addColorStop(.5,"#55d9ff");
+        lightning.addColorStop(1,"#3979ff");
+
+        ctx.fillStyle = lightning;
+        ctx.fillRect(o.x, 0, 60, o.top);
+        ctx.fillRect(
+          o.x,
+          o.top + o.gap,
+          60,
+          canvas.height - o.top - o.gap
+        );
+
+        if (!o.passed && o.x < 120) {
+          o.passed = true;
+          gameScore += 35;
+        }
+      });
+
+      drawPlane(ctx, 120, g0_planeY, 1.15);
+
+      if (
+        g0_planeY < 15 ||
+        g0_planeY > canvas.height - 15 ||
+        g0_obstacles.some(
+          o =>
+            o.x < 145 &&
+            o.x + 60 > 95 &&
+            (
+              g0_planeY - 15 < o.top ||
+              g0_planeY + 15 > o.top + o.gap
+            )
+        )
+      ) {
+        endMiniGame(false, "crash");
+        return;
+      }
+
+      ctx.fillStyle="#ffffffcc";
+      ctx.font="bold 18px system-ui";
+      ctx.textAlign="left";
+      ctx.fillText(
+        "ПРОЛЁТ: " + g0_distance.toFixed(1) + " км",
+        18,
+        30
+      );
+
+    } else if (currentGame === 1) {
+
+      g1_planePos += g1_dir;
+
+      if (Math.abs(g1_planePos) > 330) {
+        g1_dir *= -1;
+      }
+
+      const cx = canvas.width / 2 + g1_planePos;
+
+      ctx.fillStyle="#ffffff12";
+      ctx.fillRect(canvas.width/2-380, 45, 760, 330);
+
+      ctx.strokeStyle="#ffffff18";
+      ctx.lineWidth=3;
+17:20
+ctx.strokeRect(canvas.width/2-380,45,760,330);
+
+      for(let y=70;y<350;y+=55){
+        ctx.fillStyle="#ffffff22";
+        ctx.fillRect(canvas.width/2-4,y,8,28);
+      }
+
+      ctx.save();
+
+      ctx.translate(g1_targetX, g1_targetY);
+
+      ctx.fillStyle="#52e0a140";
+      ctx.strokeStyle="#52e0a1";
+      ctx.lineWidth=5;
+      ctx.shadowColor="#52e0a1";
+      ctx.shadowBlur=22;
+
+      ctx.fillRect(
+        -g1_targetSize/2,
+        -g1_targetSize/2,
+        g1_targetSize,
+        g1_targetSize
+      );
+
+      ctx.strokeRect(
+        -g1_targetSize/2,
+        -g1_targetSize/2,
+        g1_targetSize,
+        g1_targetSize
+      );
+
+      ctx.restore();
+
+      drawPlane(ctx,cx,220,1.05);
+
+      ctx.fillStyle="#fff";
+      ctx.font="bold 17px system-ui";
+      ctx.textAlign="left";
+      ctx.fillText(
+        "ПОПАДАНИЙ: "+g1_round+"/8",
+        18,
+        28
+      );
+
+      ctx.fillStyle="#ff5876";
+      ctx.textAlign="right";
+      ctx.fillText(
+        "ПРОМАХОВ: "+g1_misses+"/3",
+        canvas.width-18,
+        28
+      );
+
+      ctx.textAlign="center";
+      ctx.fillStyle="#ffffffaa";
+      ctx.font="bold 15px system-ui";
+      ctx.fillText(
+        "КЛИКАЙ ПО ЗЕЛЁНОМУ КВАДРАТУ",
+        canvas.width/2,
+        405
+      );
+
+    } else if (currentGame === 2) {
+
+      const dt = Math.min(
+        0.1,
+        (now - g2_lastTime) / 1000
+      );
+
+      g2_lastTime = now;
+      g2_timeLeft -= dt;
+
+      if (g2_timeLeft <= 0) {
+        g2_timeLeft=0;
+        endMiniGame(false,"time");
+        return;
+      }
+
+      if (
+        Math.random() < 0.055 &&
+        g2_targets.length < 7
+      ) {
+        const r = 24 + Math.random()*14;
+
+        g2_targets.push({
+          x:70+r+Math.random()*(canvas.width-140-2*r),
+          y:65+r+Math.random()*(canvas.height-135-2*r),
+          r,
+          life:2.1+Math.random()*1.5,
+          age:0,
+          phase:Math.random()*Math.PI*2
+        });
+      }
+
+      g2_targets.forEach(t => {
+        t.age += dt;
+        t.x += Math.sin(t.age*3+t.phase)*.7;
+        t.y += Math.cos(t.age*2.5+t.phase)*.5;
+      });
+
+      const expired =
+        g2_targets.filter(t=>t.age>=t.life).length;
+
+      if (expired) {
+        g2_targets =
+          g2_targets.filter(t=>t.age<t.life);
+      }
+
+      g2_targets.forEach(t => {
+
+        const pulse=1+Math.sin(t.age*7)*.08;
+
+        ctx.beginPath();
+        ctx.arc(
+          t.x,
+          t.y,
+          t.r*pulse,
+          0,
+          Math.PI*2
+        );
+        ctx.fillStyle="#ff5876";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(
+          t.x,
+          t.y,
+          t.r*.48,
+          0,
+          Math.PI*2
+        );
+        ctx.fillStyle="#ffd15a";
+        ctx.fill();
+
+        ctx.strokeStyle="#fff";
+        ctx.lineWidth=3;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(t.x-t.r-10,t.y);
+        ctx.lineTo(t.x+t.r+10,t.y);
+        ctx.moveTo(t.x,t.y-t.r-10);
+        ctx.lineTo(t.x,t.y+t.r+10);
+        ctx.strokeStyle="#ffffff60";
+        ctx.stroke();
+      });
+
+      ctx.fillStyle="#fff";
+      ctx.font="bold 24px system-ui";
+      ctx.textAlign="left";
+      ctx.fillText(
+        "ВРЕМЯ: "+g2_timeLeft.toFixed(1)+"с",
+        18,
+        32
+      );
+
+      ctx.textAlign="right";
+      ctx.fillText(
+        "ПОПАДАНИЙ: "+g2_hits,
+        canvas.width-18,
+        32
+      );
+
+      ctx.textAlign="center";
+      ctx.font="bold 16px system-ui";
+      ctx.fillStyle="#ffffffaa";
+      ctx.fillText(
+        "ПОПАДАНИЕ +5  •  ПРОМАХ −5",
+        canvas.width/2,
+        405
+      );
+
+    } else if (currentGame === 3) {
+
+      const buttons = getMemoryButtons(canvas);
+      const colors=[
+        "#55d9ff",
+        "#a979ff",
+        "#52e0a1",
+        "#ffd15a"
+      ];
+
+      buttons.forEach((b,idx)=>{
+        const active = g3_flashIndex === idx;
+
+        ctx.save();
+
+        ctx.fillStyle=colors[idx];
+        ctx.globalAlpha=active?1:.28;
+        ctx.shadowColor=colors[idx];
+        ctx.shadowBlur=active?35:0;
+17:20
+ctx.fillRect(
+          b.x,
+          b.y,
+          b.w,
+          b.h
+        );
+
+        ctx.strokeStyle="#ffffff80";
+        ctx.lineWidth=3;
+        ctx.strokeRect(
+          b.x,
+          b.y,
+          b.w,
+          b.h
+        );
+
+        ctx.restore();
+      });
+
+      ctx.fillStyle="#fff";
+      ctx.font="bold 22px system-ui";
+      ctx.textAlign="left";
+      ctx.fillText(
+        "РАУНД: "+Math.min(g3_round,25)+"/25",
+        18,
+        32
+      );
+
+      ctx.textAlign="right";
+      ctx.fillText(
+        "СЧЁТ: "+gameScore,
+        canvas.width-18,
+        32
+      );
+
+      ctx.textAlign="center";
+      ctx.font="bold 16px system-ui";
+
+      ctx.fillStyle =
+        g3_phase==="input"
+        ? "#52e0a1"
+        : "#ffffffaa";
+
+      ctx.fillText(
+        g3_phase==="input"
+          ? "ТЕПЕРЬ ПОВТОРИ ПОСЛЕДОВАТЕЛЬНОСТЬ"
+          : "ЗАПОМИНАЙ ПОСЛЕДОВАТЕЛЬНОСТЬ",
+        canvas.width/2,
+        405
+      );
+    }
+
+    $("gameScore").textContent =
+      currentGame === 2
+        ? "Счёт: " + gameScore + " • " + g2_timeLeft.toFixed(1) + "с"
+        : "Счёт: " + gameScore;
+
+    animFrame = requestAnimationFrame(runGameLoop);
+  }
+
+  function endMiniGame(silent = false, reason = "normal") {
+    if (!gameRunning && !silent) return;
+
+    gameRunning = false;
+    cancelAnimationFrame(animFrame);
+    clearMemoryTimer();
+    g3_flashIndex = -1;
+
+    if (silent) return;
+
+    let reward = 0;
+
+    if (currentGame === 0) {
+      reward =
+        900 +
+        gameScore * 18 +
+        Math.floor(g0_distance * 120);
+
+    } else if (currentGame === 1) {
+      reward = Math.max(
+        500,
+        1200 +
+        gameScore * 22 +
+        g1_round * 180 -
+        g1_misses * 80
+      );
+
+    } else if (currentGame === 2) {
+      reward = Math.max(
+        0,
+        1600 +
+        gameScore * 35 +
+        g2_hits * 120 -
+        g2_misses * 35
+      );
+
+    } else if (currentGame === 3) {
+      reward =
+        1400 +
+        gameScore * 24 +
+        g3_seq.length * 250;
+    }
+
+    S.coins += reward;
+    S.total += reward;
+
+    snd.win();
+
+    const title =
+      reason === "loss" || reason === "memoryLoss"
+        ? "💥  ИГРА ОКОНЧЕНА"
+        : "🏆 ИГРА ЗАВЕРШЕНА";
+
+    const extra =
+      currentGame === 1
+        ? ` Посадок: ${g1_round}/8, промахов: ${g1_misses}/3.`
+        : currentGame === 3
+          ? ` Раунд: ${Math.min(g3_round,25)}/25.`
+          : "";
+
+    showToast(
+      `${title}! Награда: +${fmt(reward)} 💰!${extra}`
+    );
+
+    $("gameStartBtn").textContent = "СТАРТ ИГРЫ";
+
+    updateUI();
+    save();
+  }
+
+  // ACHIEVEMENTS
+  const achDefs = [
+    [
+      "first",
+      "Первый взлёт",
+      "Сделайте ваш первый клик",
+      s => s.clicks >= 1,
+      100
+    ],
+    [
+      "click100",
+      "Опытный пилот",
+      "Совершите 100 кликов",
+      s => s.clicks >= 100,
+      500
+    ],
+    [
+      "cases5",
+      "Охотник за кейсами",
+      "Откройте 5 кейсов",
+      s => s.cases >= 5,
+      1200
+    ],
+    [
+      "fleet5",
+      "Эскадрилья",
+      "Соберите 5 самолётов",
+      s => s.collected.length >= 5,
+      2500
+    ]
+  ];
+
+  function renderAchievements() {
+    $("achievementsList").innerHTML =
+      achDefs.map(a => {
+
+        const done =
+          S.ach.includes(a[0]);
+
+        const ok =
+          a[4]
+            ? a[3](S)
+            : false;
+
+        if (ok && !done) {
+          S.ach.push(a[0]);
+          S.coins += a[4];
+          spawnConfetti();
+        }
+
+        return `
+          <div style="display:flex; gap:12px; align-items:center; padding:12px; border-bottom:1px solid #ffffff10; opacity:${done || ok ? 1 : 0.45}">
+            <div style="font-size:24px">
+              ${done || ok ? "🏆" : "🔒"}
+            </div>
+
+            <div>
+              <b style="font-size:13px">
+                ${a[1]}
+              </b>
+
+              <div style="font-size:10px; opacity:.65">
+                ${a[2]} • +${fmt(a[4])} 💰
+              </div>
+            </div>
+          </div>
+        `;
+17:20
+}).join("");
+  }
+
+  // WHEEL MODAL SYSTEM: daily free spin + bonus spins + paid unlock
+  const wheelRewa
