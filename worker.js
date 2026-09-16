@@ -222,7 +222,10 @@ async function validateTelegramInitData(
 
 
     const calculatedHash =
-    bytesToHex(
+17:08
+
+
+bytesToHex(
             await hmacSha256(
                 secretKey,
                 new TextEncoder().encode(
@@ -467,7 +470,8 @@ async function createInvoice(
             )
             VALUES (?, ?, ?, ?, ?, ?)
             `
-          )
+17:08
+)
         .bind(
             orderId,
             String(user.id),
@@ -485,7 +489,7 @@ async function createInvoice(
             "createInvoiceLink",
             {
                 title:
-                    `${crystals} 💎 AirClicker`,
+                    `${crystals} 💎  AirClicker`,
 
                 description:
                     `Пополнение AirClicker на ${crystals} кристаллов.`,
@@ -680,7 +684,8 @@ async function telegramWebhook(
 
 
         if (
-          order.status !==
+17:08
+order.status !==
             "pending"
         ) {
 
@@ -880,7 +885,8 @@ async function telegramWebhook(
                 `
             )
             .bind(
-              "paid",
+17:08
+"paid",
 
                 payment
                     .telegram_payment_charge_id,
